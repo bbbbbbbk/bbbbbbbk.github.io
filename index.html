@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>The Wandering Isle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="The Wandering Isle">
+<meta property="og:url" content="http://hex.jackiebao.cn/index.html">
+<meta property="og:site_name" content="The Wandering Isle">
+<meta property="og:locale">
+<meta property="article:author" content="Jackie Bao">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="The Wandering Isle" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">The Wandering Isle</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://hex.jackiebao.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-crawler3" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/14/crawler3/" class="article-date">
+  <time datetime="2019-03-14T09:19:00.000Z" itemprop="datePublished">2019-03-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/14/crawler3/">PHP 爬虫体验（三） - 使用PHP + puppeteer爬取js动态渲染的页面内容</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前写的两篇爬虫体验基本上涵盖了一般的Html页面提取场景，但是有些时候，如果目标页面不是纯静态的页面，而是使用js动态渲染的页面（比如<a href="http://wufazhuce.com/" target="_blank" rel="noopener">one</a>），之前的爬虫就不好使了，这种时候就要借助一些其他工具来进行实现。</p>
+<p>一般爬取动态页面的思路是通过软件模拟浏览器行为获取到渲染后的页面镜像，然后再对渲染后的页面进行分析，常用的工具有selenium，phantomJs，puppeteer等，通过对项目维护程度、对PHP友好度的对比，我选用的是puppeteer。</p>
+<p>根据官方介绍，谷歌在2017年开发了自家Chrome浏览器的Headless特性，puppeteer便是这个时候诞生的，它的原理是通过调用Chrome DevTools开放的接口与Chrome通信，将浏览器开放接口进行封装，方便用户调用，可以很容易地实现浏览器行为的模拟。</p>
+<p>尝试一下puppeteer，安装起来其实非常简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i puppeteer</span><br></pre></td></tr></table></figure>
+<p> 根据官方API写了example.js进行测试：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">start</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch();</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line">  <span class="keyword">await</span> page.goto(<span class="string">'http://wufazhuce.com'</span>);</span><br><span class="line">  <span class="keyword">return</span> page.content();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> a = <span class="keyword">await</span> start();</span><br><span class="line">  process.stdout.write(a);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>执行node example.js便可以看到控制台输出了渲染完成之后的页面Html，这个时候便能够使用php的fopen读取stdout获取到html文本进行下一步处理了。</p>
+<p>在github上面查找相关支持，发现有<a href="https://github.com/spatie/browsershot" target="_blank" rel="noopener">spatie/browsershot</a>这个项目直接把操作步骤封装好了，这样便可以使用puppeteer进行动态生成html内容的获取，然后继续使用dom-crawler来获取想要抓取的内容了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;crawler = <span class="keyword">new</span> Crawler();</span><br><span class="line">$html = Browsershot::url(<span class="keyword">$this</span>-&gt;url)</span><br><span class="line">    -&gt;setOption(<span class="string">'args'</span>, [</span><br><span class="line">        <span class="string">'--no-sandbox'</span>,</span><br><span class="line">        <span class="string">'--disable-setuid-sandbox'</span></span><br><span class="line">    ])</span><br><span class="line">    -&gt;bodyHtml();</span><br><span class="line"><span class="keyword">$this</span>-&gt;crawler-&gt;addHtmlContent($html);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2019/03/14/crawler3/" data-id="cklhgn0pf00101ctuh9soqkmc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-nvm_error" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/08/nvm_error/" class="article-date">
+  <time datetime="2019-03-08T04:25:00.000Z" itemprop="datePublished">2019-03-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/08/nvm_error/">解决nvm安装的node使用sudo npm报错的问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>主要思路是通过软链将npm添加到usr/local/bin下面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s &quot;$NVM_DIR/versions/node/$(nvm version)/bin/node&quot; &quot;/usr/local/bin/node&quot;</span><br><span class="line">sudo ln -s &quot;$NVM_DIR/versions/node/$(nvm version)/bin/npm&quot; &quot;/usr/local/bin/npm&quot;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2019/03/08/nvm_error/" data-id="cklhgn0pg00131ctub3hcsn3a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-crawler2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/22/crawler2/" class="article-date">
+  <time datetime="2018-11-22T03:26:00.000Z" itemprop="datePublished">2018-11-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/22/crawler2/">PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>自从使用hexo在github page更新博客之后，我每次在cnblog上发布文章，需要手动再更新hexo。hexo使用markdown格式来写文章，手动更新需要对文章本身内容进行转化，做成md文件再进行上传，后来就想到，本身爬虫就可以对页面中的各种元素进行提取，同时markdown使用的是标记语法，那么使用爬虫分析文章元素，提取主要内容并且根据模板自动生成对应的md文件理论上是可行的。</p>
+<p>由于我的hexo博客使用的是默认布局，所以在hexo目录下直接执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new model</span><br></pre></td></tr></table></figure>
+<p>这样就生成了一个model.md文件，接下来就是把这个文件改装成所需的模板，打开model.md，能看到默认布局hexo文章只有一个简单的front-matter区域用来进行文章变量的指定：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: model</span><br><span class="line">date: 2018-11-22 09:49:22</span><br><span class="line">tags:</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>按照官方文档，front-matter用于文章变量的指定，本身不会作为markdown被解析，所以模板布局可以分为两个部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">&#123;&#123;front-matter&#125;&#125;</span><br><span class="line">---</span><br><span class="line">&#123;&#123;markdown&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来就是对文章元素的提取并且转化成相应的hexo文章内容，并且拼接填充至模板当中了。</p>
+<p>这里我简单封装了一个MarkdownGenerator类用来把文章转换成markdown文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Root</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">DomCrawler</span>\<span class="title">Crawler</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">Class</span> <span class="title">MarkdownGenerator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $client;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $crawler;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $url;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $assetPath;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $contentsArray = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $categories = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $tags = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $title;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $dateString;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $documentName;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 初始化，会在同目录下生成一个和文档同名的文件夹用来装静态资源</span></span><br><span class="line"><span class="comment">     * MarkdownGenerator constructor.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $documentName</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($documentName)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;documentName = $documentName;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;assetPath = <span class="keyword">__DIR__</span> . <span class="string">"/&#123;$this-&gt;documentName&#125;/"</span>;</span><br><span class="line">        <span class="keyword">if</span>(!is_dir(<span class="keyword">$this</span>-&gt;assetPath))&#123;</span><br><span class="line">            mkdir(<span class="keyword">$this</span>-&gt;assetPath, <span class="number">755</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        $headers = [</span><br><span class="line">            <span class="string">'user-agent'</span> =&gt; <span class="string">'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'</span>,</span><br><span class="line">        ];</span><br><span class="line">        <span class="keyword">$this</span>-&gt;client = <span class="keyword">new</span> Client([</span><br><span class="line">            <span class="string">'timeout'</span> =&gt; <span class="number">20</span>,</span><br><span class="line">            <span class="string">'headers'</span> =&gt; $headers</span><br><span class="line">        ]);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;crawler = <span class="keyword">new</span> Crawler();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 设置文章url</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> string $url</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setUrl</span><span class="params">($url = <span class="string">''</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;url = $url;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 设置文章tags</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> array $tags</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setTags</span><span class="params">($tags = [])</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;tags = $tags;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 设置文章categories</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> array $categories</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setCategories</span><span class="params">($categories = [])</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;categories = $categories;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生成markdown文件</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">generate</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $responseContent = <span class="keyword">$this</span>-&gt;client-&gt;request(<span class="string">'GET'</span>, <span class="keyword">$this</span>-&gt;url)-&gt;getBody()-&gt;getContents();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;crawler-&gt;addHtmlContent($responseContent);</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">//获取文章title</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;title = trim(<span class="keyword">$this</span>-&gt;crawler-&gt;filterXPath(<span class="string">'//h1[@class="postTitle"]'</span>)-&gt;text());</span><br><span class="line">            <span class="comment">//获取文章发布时间</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;dateString = trim(<span class="keyword">$this</span>-&gt;crawler-&gt;filterXPath(<span class="string">'//span[@id="post-date"]'</span>)-&gt;text());</span><br><span class="line">            <span class="comment">//处理文章正文部分</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;crawler-&gt;filterXPath(<span class="string">'//div[@id="cnblogs_post_body"]'</span>)-&gt;children()-&gt;each(<span class="function"><span class="keyword">function</span><span class="params">(Crawler $node)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">$this</span>-&gt;contentsArray[] = <span class="keyword">$this</span>-&gt;parseParagraph($node);</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="comment">//组装markdown正文部分</span></span><br><span class="line">            $markdownContent = <span class="keyword">$this</span>-&gt;makeContent();</span><br><span class="line">            $frontMatter = <span class="keyword">$this</span>-&gt;makeFrontMatter();</span><br><span class="line">            $tmplate = file_get_contents(<span class="string">'model.md'</span>);</span><br><span class="line">            $content = str_replace([<span class="string">'&#123;&#123;front-matter&#125;&#125;'</span>,<span class="string">'&#123;&#123;markdown&#125;&#125;'</span>],[$frontMatter, $markdownContent], $tmplate);</span><br><span class="line">            file_put_contents(<span class="keyword">$this</span>-&gt;documentName.<span class="string">'.md'</span>, $content);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (\Throwable $e)&#123;</span><br><span class="line">            print_r($e-&gt;getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 处理段落</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Crawler $node</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> mixed|string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">parseParagraph</span><span class="params">(Crawler $node)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $res = $node-&gt;html();</span><br><span class="line">        <span class="comment">//替换a标签,替换成markdown当中的格式</span></span><br><span class="line">        $linkPattern = <span class="string">'#&lt;a\b[^&gt;]+\bhref=\"([^\"]*)\"[^&gt;]*&gt;([\s\S]*?)&lt;\/a&gt;#'</span>;</span><br><span class="line">        preg_match_all($linkPattern, $res, $links);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>($links[<span class="number">0</span>]))&#123;</span><br><span class="line">            <span class="keyword">foreach</span> ($links[<span class="number">2</span>] <span class="keyword">as</span> $k =&gt; $link)&#123;</span><br><span class="line">                $l = <span class="string">"[&#123;$link&#125;](&#123;$links[1][$k]&#125;)"</span>;</span><br><span class="line">                $res = str_replace($links[<span class="number">0</span>][$k], $l, $res);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//处理图片，图片这里使用hexo的图片标签,格式为&#123;% asset_img name.format alt %&#125;, 对应图片放在和post目录下和md文件同名文件夹中</span></span><br><span class="line">        $imgPattern = <span class="string">'#&lt;img\b[^&gt;]+\bsrc="([^"]*)"[^&gt;]+\balt="([^"]*)"[^&gt;]*&gt;#'</span>;</span><br><span class="line">        preg_match_all($imgPattern, $res, $imgs);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>($imgs[<span class="number">0</span>]))&#123;</span><br><span class="line">            <span class="keyword">foreach</span> ($imgs[<span class="number">2</span>] <span class="keyword">as</span> $k =&gt; $img)&#123;</span><br><span class="line">                $imageUrl = $imgs[<span class="number">1</span>][$k];</span><br><span class="line">                <span class="comment">//下载图片并放入对应的文件夹内</span></span><br><span class="line">                $imageName = pathinfo($imageUrl)[<span class="string">'basename'</span>];</span><br><span class="line">                $fileName = <span class="keyword">$this</span>-&gt;assetPath . $imageName;</span><br><span class="line">                $image = <span class="keyword">$this</span>-&gt;client-&gt;get($imageUrl)-&gt;getBody()-&gt;getContents();</span><br><span class="line">                file_put_contents($fileName, $image);</span><br><span class="line">                $i = <span class="string">"&#123;% asset_img &#123;$imageName&#125; &#123;$imgs[2][$k]&#125; %&#125;"</span>;</span><br><span class="line">                $res = str_replace($imgs[<span class="number">0</span>][$k], $i, $res);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//处理内嵌代码</span></span><br><span class="line">        <span class="keyword">if</span>($node-&gt;attr(<span class="string">'class'</span>) === <span class="string">'cnblogs_code'</span>)&#123;</span><br><span class="line">            $plainCodes = trim($node-&gt;text());</span><br><span class="line">            $res = htmlspecialchars(<span class="string">"```"</span>) .<span class="string">"\n&#123;$plainCodes&#125;\n"</span> . htmlspecialchars(<span class="string">"```"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 组装markdown正文部分</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">makeContent</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (implode(<span class="keyword">$this</span>-&gt;contentsArray, <span class="string">"\n\n"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 组装frontMatter部分</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">makeFrontMatter</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $res = <span class="string">&lt;&lt;&lt;FM</span></span><br><span class="line"><span class="string">title: <span class="subst">&#123;$this-&gt;title&#125;</span></span></span><br><span class="line"><span class="string">date: <span class="subst">&#123;$this-&gt;dateString&#125;</span></span></span><br><span class="line"><span class="string">FM;</span></span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;categories))&#123;</span><br><span class="line">            $res .= <span class="string">"\ncategories:\n- "</span> . implode(<span class="keyword">$this</span>-&gt;categories, <span class="string">"\n- "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;tags))&#123;</span><br><span class="line">            $res .= <span class="string">"\ntags:\n- "</span> . implode(<span class="keyword">$this</span>-&gt;tags, <span class="string">"\n- "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来只用实例化generator类，然后设置各项属性，调用generate方法就能够抓取生成markdown文件了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$generator = <span class="keyword">new</span> MarkdownGenerator(<span class="string">'test'</span>);</span><br><span class="line">$generator-&gt;setUrl(<span class="string">'https://www.cnblogs.com/jackiebao/p/8466232.html'</span>);</span><br><span class="line">$generator-&gt;setTags([<span class="string">'test1'</span>,<span class="string">'test2'</span>]);</span><br><span class="line">$generator-&gt;setCategories([<span class="string">'test_cat'</span>]);</span><br><span class="line">$generator-&gt;generate();</span><br></pre></td></tr></table></figure>
+<p> P.S.本篇文章hexo版本即为该脚本生成。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/11/22/crawler2/" data-id="cklhgn0p9000q1ctu91ecscke" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-composer-vcs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/21/composer-vcs/" class="article-date">
+  <time datetime="2018-11-21T09:57:55.000Z" itemprop="datePublished">2018-11-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/21/composer-vcs/">composer 更新项目使用VCS源</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们在PHP开发当中难免会遇到这种情况，在用composer做包管理工具的时候，项目依赖的某个开源组件的部分代码需要根据整个项目的需求进行修改，这种时候可以通过修改vendor包里面的组件源码来实现，然而修改vendor包容易导致一个问题，那就是版本不容易进行管理，如果进行composer update操作很容易就把修改过的代码给覆盖了。将composer的repository管理设置为vcs源可以很好地解决这个问题。</p>
+<p>VCS全称Version Control System，意为版本管理系统，根据composer官方文档，现在composer支持<code>Git</code>、<code>Subversion</code>、<code>Mercurial</code>和<code>Fossil</code>等版本管理系统，其中如果使用<code>Github</code>的git源，<code>Bitbucket</code>的git和mercurial源，composer是可以直接通过API获取到zip包的，如果是其他源，则需要本地有对应的客户端支持。</p>
+<p>假设有这么个场景，在开发的过程中使用了<code>authorA</code>的<code>projectA</code>包，然后我需要对包里面某个部分的代码进行一些跟本地项目环境更加适配的更改，就可以先将<code>projectA</code>的项目代码fork到自己的github目录下，这样就可以对项目源码进行修改了（请遵循相应的开源协议），然后在工程目录的composer.json当中只需要加入这几行代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"repositories"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"vcs"</span>,</span><br><span class="line">            <span class="string">"url"</span>: <span class="string">"https://github.com/myAcount/projectA"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"require"</span>: &#123;</span><br><span class="line">        <span class="string">"authorA/projectA"</span>: <span class="string">"~x.x"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将本地修改后的代码push到自己的仓库中，注意要打tag，然后在项目目录下执行<code>composer update authorA/projectA</code>  命令就可以使用用自己仓库做源的<code>projectA</code>包了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/11/21/composer-vcs/" data-id="cklhgn0p8000o1ctue2o8j90m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-php-crawler-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/15/php-crawler-1/" class="article-date">
+  <time datetime="2018-10-15T02:36:18.000Z" itemprop="datePublished">2018-10-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/15/php-crawler-1/">PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网络爬虫在大数据时代可以非常高效地自动进行数据的收集处理，而传统爬虫最简单也是最基本的功能实现原理即是下载网页，然后通过抽取页面元素来达到收集信息的目的。</p>
+<p>PHP作为一门灵活易用的脚本语言，实现这些功能自然是不在话下的。</p>
+<p>这里实现爬虫基于两个组件：</p>
+<p><a href="https://github.com/guzzle/guzzle" target="_blank" rel="noopener">guzzle</a>：最好用的PHP HTTP客户端，用来进行爬取页面的请求，异步请求和并发请求功能可以用来实现一些后期的扩展功能。</p>
+<p><a href="https://github.com/symfony/dom-crawler" target="_blank" rel="noopener">dom-crawler</a>：symphony的Dom分析组件，可以用来分析HTML页面Dom元素和XML文件，用来进行页面分析。</p>
+<p>两个组件在项目中都可以很方便地使用composer进行安装，这里以博客园的文章为例，使用这两个组件实现最简单的页面抓取，抓取我个人博客园首页的文章摘要和链接。</p>
+<p>代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require_once</span> <span class="keyword">__DIR__</span> . <span class="string">'/vendor/autoload.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">DomCrawler</span>\<span class="title">Crawler</span>;</span><br><span class="line"></span><br><span class="line">run();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">run</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//要爬取的页面地址为我的博客园主页</span></span><br><span class="line">    $url = <span class="string">"http://www.cnblogs.com/jackiebao/"</span>;</span><br><span class="line">    <span class="comment">//伪造浏览器UA</span></span><br><span class="line">    $headers = [</span><br><span class="line">        <span class="string">'user-agent'</span> =&gt; <span class="string">'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'</span>,</span><br><span class="line">    ];</span><br><span class="line">    $client = <span class="keyword">new</span> Client([</span><br><span class="line">        <span class="string">'timeout'</span> =&gt; <span class="number">20</span>,</span><br><span class="line">        <span class="string">'headers'</span> =&gt; $headers</span><br><span class="line">    ]);</span><br><span class="line">    <span class="comment">//发送请求获取页面内容</span></span><br><span class="line">    $response = $client-&gt;request(<span class="string">'GET'</span>, $url)-&gt;getBody()-&gt;getContents();</span><br><span class="line"></span><br><span class="line">    $data = [];</span><br><span class="line">    $crawler = <span class="keyword">new</span> Crawler();</span><br><span class="line">    $crawler-&gt;addHtmlContent($response);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用crawler进行页面内容分析</span></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">//这里使用的是xpath语法，轮询forFlow子类day中的元素，既页面上每一篇文章的块状元素，并且进行内容获取</span></span><br><span class="line">        $crawler-&gt;filterXPath(<span class="string">'//div[contains(@class, "forFlow")]/div[contains(@class, "day")]'</span>)-&gt;each(<span class="function"><span class="keyword">function</span><span class="params">(Crawler $node, $i)</span> <span class="title">use</span> <span class="params">(&amp;$data)</span></span>&#123;</span><br><span class="line">            $item = [</span><br><span class="line">                <span class="string">'date'</span> =&gt; $node-&gt;filterXPath(<span class="string">'//div[contains(@class, "dayTitle")]/a'</span>)-&gt;text(),</span><br><span class="line">                <span class="string">'title'</span> =&gt; $node-&gt;filterXPath(<span class="string">'//div[contains(@class, "postTitle")]/a'</span>)-&gt;text(),</span><br><span class="line">                <span class="string">'abstract'</span> =&gt; $node-&gt;filterXPath(<span class="string">'//div[contains(@class, "postCon")]/div'</span>)-&gt;text(),</span><br><span class="line">                <span class="string">'url'</span> =&gt; $node-&gt;filterXPath(<span class="string">'//div[contains(@class, "postCon")]/div/a'</span>)-&gt;attr(<span class="string">'href'</span>),</span><br><span class="line">            ];</span><br><span class="line">            $data[] = $item;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;<span class="keyword">catch</span> (\<span class="keyword">Exception</span> $e)&#123;</span><br><span class="line">        <span class="keyword">echo</span> $e-&gt;getMessage() . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//打印结果</span></span><br><span class="line">    print_r($data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印出来的结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">Array</span><br><span class="line">(</span><br><span class="line">    [0] =&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] =&gt; 2018年4月27日</span><br><span class="line">            [title] =&gt; windows环境下给PHP增加rdkafka扩展</span><br><span class="line">            [abstract] =&gt; 摘要: 因为工作需要kafka作为消息中间件，所以在本地开发环境进行测试的时候需要给PHP添加rdkafka扩展，使用PHP作为producer或者cosumer，在此纪录一下rdkafka的安装过程。 扩展下载地址：http://pecl.php.net/package/rdkafka 根据自身PHP版本阅读全文</span><br><span class="line">            [url] =&gt; https://www.cnblogs.com/jackiebao/p/8962804.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [1] =&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] =&gt; 2018年2月24日</span><br><span class="line">            [title] =&gt; 在亚马逊aws服务器上添加Google BBR支持</span><br><span class="line">            [abstract] =&gt; 摘要: 参考文章： https://51.ruyo.net/2783.html http://blog.csdn.net/VgFengYe/article/details/78609040 官方 quick start文档：https://github.com/google/bbr/blob/master/阅读全文</span><br><span class="line">            [url] =&gt; https://www.cnblogs.com/jackiebao/p/8466232.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [2] =&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] =&gt; 2018年2月22日</span><br><span class="line">            [title] =&gt; PHP static关键字和self关键字的区别</span><br><span class="line">            [abstract] =&gt; 摘要: 在PHP的一个类中，带有static关键字的方法和属性被称为静态方法和静态属性，这样的方法和属性可以通过类直接访问，而不需要通过类对应的实例来进行访问，在类中访问静态变量以及静态属性的时候，可以使用self关键字和static关键字，两种访问方式看起来似乎没有区别，但是实际上还是不一样的 运行之后的阅读全文</span><br><span class="line">            [url] =&gt; https://www.cnblogs.com/jackiebao/p/8459899.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [3] =&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] =&gt; 2018年2月6日</span><br><span class="line">            [title] =&gt; linux系统mysql忘记密码处理</span><br><span class="line">            [abstract] =&gt; 摘要: 最近开始重新拾掇自己优惠时贪便宜买的一台京东云主机，然而早已经将当年集成环境一键安装时设置的mysql密码给忘了。 于是度娘了解决办法，大致分为以下步骤： 结果执行之后报这个错误 “Unknown column &apos;password&apos; in &apos;field list&apos;”。 后查询得知mysql在5.7版阅读全文</span><br><span class="line">            [url] =&gt; https://www.cnblogs.com/jackiebao/p/8424672.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [4] =&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] =&gt; 2018年1月25日</span><br><span class="line">            [title] =&gt; PHP7 新增加的两种运算符</span><br><span class="line">            [abstract] =&gt; 摘要: 太空舱运算符: 空合并运算符：阅读全文</span><br><span class="line">            [url] =&gt; https://www.cnblogs.com/jackiebao/p/8352383.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [5] =&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] =&gt; 2017年4月25日</span><br><span class="line">            [title] =&gt; PHP trait 特性</span><br><span class="line">            [abstract] =&gt; 摘要: trait是PHP自5.4版本之后加入的一种新的代码复用机制，是一种细粒度代码复用的方法。官方文档对于trait给出的解释是： 自 PHP 5.4.0 起，PHP 实现了一种代码复用的方法，称为 trait。 Trait 是为类似 PHP 的单继承语言而准备的一种代码复用机制。Trait 为了减少单阅读全文</span><br><span class="line">            [url] =&gt; https://www.cnblogs.com/jackiebao/p/6763388.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [6] =&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] =&gt; 2017年1月23日</span><br><span class="line">            [title] =&gt; PHP 字符串拆分函数</span><br><span class="line">            [abstract] =&gt; 摘要: function str_split_utf8($str) &#123; $split = 1; $array = array(); for ($i = 0; $i 127) &#123; if ($value &gt;= 192 &amp;&amp; $value = 224 &amp;&amp; $value = 240 &amp;&amp; $value &lt;= 247) &#123; ...阅读全文</span><br><span class="line">            [url] =&gt; https://www.cnblogs.com/jackiebao/p/6344173.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [7] =&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] =&gt; 2016年10月25日</span><br><span class="line">            [title] =&gt; Windows 环境下php安装openssl证书</span><br><span class="line">            [abstract] =&gt; 摘要: 新的电脑安装了PHP、设置好环境变量之后安装了composer，想要通过composer安装Yii2，结果出现了如下报错： 检查发现php.ini里面的extension=php_openssl.dll已开启,如提示所说问题的原因是证书认证失败。 解决方法： http://curl.haxx.se/阅读全文</span><br><span class="line">            [url] =&gt; https://www.cnblogs.com/jackiebao/p/5996770.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [8] =&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] =&gt; 2016年7月21日</span><br><span class="line">            [title] =&gt; PHP 按照多个键值给数组分组合并</span><br><span class="line">            [abstract] =&gt; 摘要: 简介： $array 为一堆数组，各数组键值为固定 $keys为分组依据，在$array中按照$keys所指定的键值将数组分组，并且将除$keys指定键值对应的值以外的值合并 输出：阅读全文</span><br><span class="line">            [url] =&gt; https://www.cnblogs.com/jackiebao/p/5691094.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>得到这样格式化的数据就很方便进行进一步的处理了，而最基础的爬虫功能也就实现了，实际上是非常简单的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/10/15/php-crawler-1/" data-id="cklhgn0pl001d1ctub9w0qoc9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-rdkafka" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/rdkafka/" class="article-date">
+  <time datetime="2018-07-22T10:35:50.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/rdkafka/">windows环境下给PHP增加rdkafka扩展</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因为工作需要kafka作为消息中间件，所以在本地开发环境进行测试的时候需要给PHP添加rdkafka扩展，使用PHP作为producer或者cosumer，在此纪录一下rdkafka的安装过程。</p>
+<p><a href="http://pecl.php.net/package/rdkafka" target="_blank" rel="noopener">扩展下载地址</a></p>
+<p>根据自身PHP版本选择相应的包，使用phpinfo()函数可以很方便的查看自己PHP版本：</p>
+<img src="/2018/07/22/rdkafka/1.png" title="查看PHP版本">
+<p>我的是7.1.5 vc14 x64 nts版本的php 所以选择相应的扩展包进行下载：</p>
+<img src="/2018/07/22/rdkafka/2.png" title="选择扩展包">
+<p>windows版的扩展包下载下来之后是一个压缩文件，解压之后得到一堆文件</p>
+<p>将其中rdkafka.dll放入php目录下的ext文件夹内，librdkafka.dll放入php目录下，然后修改php.ini，添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extension=php_rdkafka.dll</span><br></pre></td></tr></table></figure>
+<p>然后重启服务器，再通过phpinfo查看，便能看到rdkafka扩展已经成功安装</p>
+<img src="/2018/07/22/rdkafka/3.png" title="扩展成功安装">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/rdkafka/" data-id="cklhgn0ps001o1ctuhq6b8mt3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-BBR_support" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/BBR_support/" class="article-date">
+  <time datetime="2018-07-22T10:26:38.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/BBR_support/">在亚马逊aws服务器上添加Google BBR支持</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://51.ruyo.net/2783.html" target="_blank" rel="noopener">参考文章1</a></p>
+<p><a href="http://blog.csdn.net/VgFengYe/article/details/78609040" target="_blank" rel="noopener">参考文章2</a></p>
+<p><a href="https://github.com/google/bbr/blob/master/Documentation/bbr-quick-start.md" target="_blank" rel="noopener">官方 quick start文档</a></p>
+<p>1、获取root权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -s</span><br></pre></td></tr></table></figure>
+<p>2、根据官方文档，TCP BBR需要linux的内核版本为4.9或者更高版本，因此需要先检查系统内核：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查看当前系统全部信息</span><br><span class="line">uname -a</span><br></pre></td></tr></table></figure>
+<img src="/2018/07/22/BBR_support/1.png" title="系统信息">
+<p>显示系统内核为4.4.0，所以需要升级一下内核</p>
+<p>在<a href="http://kernel.ubuntu.com/~kernel-ppa/mainline/" target="_blank" rel="noopener">这里</a>查看最新内核，根据系统架构下载最新的.deb文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.16-rc2/linux-image-4.16.0-041600rc2-generic_4.16.0-041600rc2.201802190311_amd64.deb</span><br></pre></td></tr></table></figure>
+<p>安装内核：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -i linux-image-4.16.0-041600rc2-generic_4.16.0-041600rc2.201802190311_amd64.deb</span><br></pre></td></tr></table></figure>
+<p>更新引导文件并且重启系统：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#更新grub系统引导文件</span><br><span class="line">update-grub</span><br><span class="line">#重启系统</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<p>重启后执行uname -r可以看到系统内核已经切换</p>
+
+<p>开启bbr：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;net.core.default_qdisc=fq&quot; &gt;&gt; /etc/sysctl.conf</span><br><span class="line">echo &quot;net.ipv4.tcp_congestion_control=bbr&quot; &gt;&gt; /etc/sysctl.conf</span><br><span class="line">#保存</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
+<p>提示permission denied，sudo -s获取root权限，再次执行操作,成功。</p>
+<p>执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl net.ipv4.tcp_available_congestion_control</span><br></pre></td></tr></table></figure>
+<p>看到net.ipv4.tcp_available_congestion_control = reno cubic bbr</p>
+<p>再执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep bbr</span><br></pre></td></tr></table></figure>
+<p>看到tcp_bbr                20480  1</p>
+<p>说明操作成功bbr已经启动</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/BBR_support/" data-id="cklhgn0oi00001ctudqbi275t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-aws" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/aws/" class="article-date">
+  <time datetime="2018-07-22T09:38:37.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/aws/">注册免费试用12个月的亚马逊AWS云计算服务</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>注册：</p>
+<p><a href="https://aws.amazon.com/cn/free/" target="_blank" rel="noopener">注册地址</a></p>
+<p>点击页面中间的创建免费用户，进入下一步页面:</p>
+<img src="/2018/07/22/aws/1.png" title="注册地址">
+<p>然后就是填写各种个人信息的页面了:</p>
+<img src="/2018/07/22/aws/2.png" title="创建免费用户">
+<p>填写付款信息:</p>
+<img src="/2018/07/22/aws/3.png" title="填写个人信息">
+<p>付款信息会进行一个电话验证，这里需要先填写对应的电话号码和验证码，然后点立刻呼叫我，提示音之后从手机键盘上输入提示的验证码就可以完成验证</p>
+<img src="/2018/07/22/aws/4.png" title="填写付款信息">
+<p>验证登录完成后进入主界面：</p>
+<img src="/2018/07/22/aws/5.png" title="付款信息电话验证">
+<p>选择所有服务-》EC2，然后启动实例:</p>
+<img src="/2018/07/22/aws/6.png" title="进入主界面">
+<p>我选择的是Ubuntu Server 16.04 LTS (HVM), SSD Volume Type：</p>
+<img src="/2018/07/22/aws/7.png" title="启动实例">
+<p> 选择好实例类型然后点审核启动：</p>
+<img src="/2018/07/22/aws/8.png" title="实例类型">
+<p>下载保存密钥对：</p>
+<img src="/2018/07/22/aws/9.png" title="启动实例">
+<p>然后就能看到启动状态了：</p>
+<img src="/2018/07/22/aws/10.png" title="下载密钥对">
+<p>选择创建账单警报以免超过免费流量限制：</p>
+<img src="/2018/07/22/aws/11.png" title="查看启动状态">
+<p>在控制台可以看见实例已经在运行，接下来就是连接到服务器了：</p>
+<img src="/2018/07/22/aws/12.png" title="创建账单报警">
+<p>使用xshell连接：</p>
+<p>打开xshell，选择工具-&gt;用户秘钥管理者，点导入秘钥，导入刚才创建的秘钥对</p>
+<img src="/2018/07/22/aws/13.png" title="连接服务器">
+<p>然后新建连接：</p>
+<img src="/2018/07/22/aws/14.png" title="打开xshell">
+<p>设置用户身份验证方式：</p>
+<img src="/2018/07/22/aws/15.png" title="新建xshell链接">
+<p>点击确定后，会弹出会话窗口，第一次连接会弹出警告框，选择”接受并保存”：</p>
+<img src="/2018/07/22/aws/16.png" title="设置用户身份验证方式">
+<p>点击连接，出现以下界面，表示连接成功：</p>
+<img src="/2018/07/22/aws/17.png" title="弹出会话窗口">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/aws/" data-id="cklhgn0p6000l1ctufd61vv4t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-diffrences_between_static_and_self" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/diffrences_between_static_and_self/" class="article-date">
+  <time datetime="2018-07-22T09:28:02.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/diffrences_between_static_and_self/">PHP static关键字和self关键字的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在PHP的一个类中，带有static关键字的方法和属性被称为静态方法和静态属性，这样的方法和属性可以通过类直接访问，而不需要通过类对应的实例来进行访问，在类中访问静态变量以及静态属性的时候，可以使用self关键字和static关键字，两种访问方式看起来似乎没有区别，但是实际上还是不一样的</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> $_className = <span class="string">'Person'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getIntro</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'this is a Person'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">say</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>::getIntro();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">staticSay</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">static</span>::getIntro();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getClassName</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>::$_className;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">staticGetClassName</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">static</span>::$_className;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Driver</span> <span class="keyword">extends</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> $_className = <span class="string">'Driver'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getIntro</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'this is a Driver'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$temp = <span class="keyword">new</span> Driver;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> $temp-&gt;getClassName().<span class="string">'&lt;br&gt;'</span>;</span><br><span class="line"><span class="keyword">echo</span> $temp-&gt;say().<span class="string">'&lt;br&gt;'</span>;</span><br><span class="line"><span class="comment">//static</span></span><br><span class="line"><span class="keyword">echo</span> $temp-&gt;staticGetClassName().<span class="string">'&lt;br&gt;'</span>;</span><br><span class="line"><span class="keyword">echo</span> $temp-&gt;staticSay().<span class="string">'&lt;br&gt;'</span>;</span><br></pre></td></tr></table></figure>
+<p>运行之后的结果为:</p>
+<p>Person<br>this is a Person<br>Driver<br>this is a Driver</p>
+<p>由此可看出，在类中使用self关键字访问的静态方法以及静态变量时，self被解析为定义方法和变量的类，在使用static关键字访问的时候，static指的是被调用的类</p>
+<p>在抽象类中加入方法print打印一个类的实例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> $_className = <span class="string">'Person'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getIntro</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'this is a Person'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">say</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>::getIntro();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">staticSay</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">static</span>::getIntro();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getClassName</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>::$_className;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">staticGetClassName</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">static</span>::$_className;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//print方法用于打印一个类的实例</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">print</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        print_r(<span class="keyword">new</span> <span class="keyword">self</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$temp = <span class="keyword">new</span> Driver;</span><br><span class="line">$temp-&gt;print();</span><br></pre></td></tr></table></figure>
+<p>运行后会报“Cannot instantiate abstract class Person”错误，原因是此时$temp-&gt;print()方法中new self()指的是定义的Person这个类，而抽象类是无法实例化的，此时将方法改为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">print</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    print_r(<span class="keyword">new</span> <span class="keyword">static</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>即可成功运行，输出Driver Object ( )，说明此时打印出来的实例为Driver类的实例</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/diffrences_between_static_and_self/" data-id="cklhgn0pd000y1ctu40j7spgz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-find_mysql_password" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/find_mysql_password/" class="article-date">
+  <time datetime="2018-07-22T09:24:17.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/find_mysql_password/">linux系统下mysql忘记密码处理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近开始重新拾掇自己优惠时贪便宜买的一台京东云主机，然而早已经将当年集成环境一键安装时设置的mysql密码给忘了。</p>
+<p>于是度娘了解决办法，大致分为以下步骤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#停止mysqld</span><br><span class="line"></span><br><span class="line">service mysqld stop</span><br><span class="line"></span><br><span class="line">#以不检查权限的方式启动mysql</span><br><span class="line"></span><br><span class="line">mysqld --skip-grant-tables&amp;</span><br><span class="line"></span><br><span class="line">#用root帐号以空密码的形式登录mysql</span><br><span class="line"></span><br><span class="line">mysql -u root</span><br><span class="line"></span><br><span class="line">#进入mysql命令行界面之后，执行以下命令 分别是 修改root用户密码、重新加载权限、退出mysql命令行界面</span><br><span class="line"></span><br><span class="line">mysql&gt; update mysql.user set password=PASSWORD(&apos;新密码&apos;) where user=&apos;root&apos;;  </span><br><span class="line">mysql&gt; flush privileges;  </span><br><span class="line">mysql&gt; quit</span><br></pre></td></tr></table></figure>
+<p>结果执行之后报这个错误 “Unknown column ‘password’ in ‘field list’”。</p>
+<img src="/2018/07/22/find_mysql_password/1.png" title="报错">
+<p>后查询得知mysql在5.7版本下已经没有password这个字段了，同一字段换成了authentication_string,因此对之前的步骤进行修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#修改密码的命令改为：</span><br><span class="line">mysql&gt; update mysql.user set authentication_string=password(新密码) where user=&apos;root&apos;;#修改密码</span><br><span class="line">mysql&gt; flush priviledge;#重载权限</span><br><span class="line">mysql&gt; quit;#退出mysql命令行</span><br></pre></td></tr></table></figure>
+<p>密码修改成功</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/find_mysql_password/" data-id="cklhgn0pi00171ctur75j4377" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/old-archives/">旧文搬运</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wamp/" rel="tag">wamp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 13.33px;">nodejs</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/wamp/" style="font-size: 10px;">wamp</a> <a href="/tags/windows/" style="font-size: 13.33px;">windows</a> <a href="/tags/old-archives/" style="font-size: 20px;">旧文搬运</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/03/14/crawler3/">PHP 爬虫体验（三） - 使用PHP + puppeteer爬取js动态渲染的页面内容</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/08/nvm_error/">解决nvm安装的node使用sudo npm报错的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/22/crawler2/">PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/21/composer-vcs/">composer 更新项目使用VCS源</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/15/php-crawler-1/">PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Jackie Bao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

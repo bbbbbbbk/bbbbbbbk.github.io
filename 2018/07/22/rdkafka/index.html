@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>windows环境下给PHP增加rdkafka扩展 | The Wandering Isle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="因为工作需要kafka作为消息中间件，所以在本地开发环境进行测试的时候需要给PHP添加rdkafka扩展，使用PHP作为producer或者cosumer，在此纪录一下rdkafka的安装过程。 扩展下载地址 根据自身PHP版本选择相应的包，使用phpinfo()函数可以很方便的查看自己PHP版本：  我的是7.1.5 vc14 x64 nts版本的php 所以选择相应的扩展包进行下载：  win">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows环境下给PHP增加rdkafka扩展">
+<meta property="og:url" content="http://hex.jackiebao.cn/2018/07/22/rdkafka/index.html">
+<meta property="og:site_name" content="The Wandering Isle">
+<meta property="og:description" content="因为工作需要kafka作为消息中间件，所以在本地开发环境进行测试的时候需要给PHP添加rdkafka扩展，使用PHP作为producer或者cosumer，在此纪录一下rdkafka的安装过程。 扩展下载地址 根据自身PHP版本选择相应的包，使用phpinfo()函数可以很方便的查看自己PHP版本：  我的是7.1.5 vc14 x64 nts版本的php 所以选择相应的扩展包进行下载：  win">
+<meta property="og:locale">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/rdkafka/1.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/rdkafka/2.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/rdkafka/3.png">
+<meta property="article:published_time" content="2018-07-22T10:35:50.000Z">
+<meta property="article:modified_time" content="2021-02-23T03:35:28.720Z">
+<meta property="article:author" content="Jackie Bao">
+<meta property="article:tag" content="旧文搬运">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hex.jackiebao.cn/2018/07/22/rdkafka/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="The Wandering Isle" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">The Wandering Isle</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://hex.jackiebao.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-rdkafka" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/rdkafka/" class="article-date">
+  <time datetime="2018-07-22T10:35:50.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      windows环境下给PHP增加rdkafka扩展
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因为工作需要kafka作为消息中间件，所以在本地开发环境进行测试的时候需要给PHP添加rdkafka扩展，使用PHP作为producer或者cosumer，在此纪录一下rdkafka的安装过程。</p>
+<p><a href="http://pecl.php.net/package/rdkafka" target="_blank" rel="noopener">扩展下载地址</a></p>
+<p>根据自身PHP版本选择相应的包，使用phpinfo()函数可以很方便的查看自己PHP版本：</p>
+<img src="/2018/07/22/rdkafka/1.png" title="查看PHP版本">
+<p>我的是7.1.5 vc14 x64 nts版本的php 所以选择相应的扩展包进行下载：</p>
+<img src="/2018/07/22/rdkafka/2.png" title="选择扩展包">
+<p>windows版的扩展包下载下来之后是一个压缩文件，解压之后得到一堆文件</p>
+<p>将其中rdkafka.dll放入php目录下的ext文件夹内，librdkafka.dll放入php目录下，然后修改php.ini，添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extension=php_rdkafka.dll</span><br></pre></td></tr></table></figure>
+<p>然后重启服务器，再通过phpinfo查看，便能看到rdkafka扩展已经成功安装</p>
+<img src="/2018/07/22/rdkafka/3.png" title="扩展成功安装">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/rdkafka/" data-id="cklhgn0ps001o1ctuhq6b8mt3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/15/php-crawler-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/22/BBR_support/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在亚马逊aws服务器上添加Google BBR支持</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/old-archives/">旧文搬运</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wamp/" rel="tag">wamp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 13.33px;">nodejs</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/wamp/" style="font-size: 10px;">wamp</a> <a href="/tags/windows/" style="font-size: 13.33px;">windows</a> <a href="/tags/old-archives/" style="font-size: 20px;">旧文搬运</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/03/14/crawler3/">PHP 爬虫体验（三） - 使用PHP + puppeteer爬取js动态渲染的页面内容</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/08/nvm_error/">解决nvm安装的node使用sudo npm报错的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/22/crawler2/">PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/21/composer-vcs/">composer 更新项目使用VCS源</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/15/php-crawler-1/">PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Jackie Bao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

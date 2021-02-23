@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>The Wandering Isle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="The Wandering Isle">
+<meta property="og:url" content="http://hex.jackiebao.cn/page/2/index.html">
+<meta property="og:site_name" content="The Wandering Isle">
+<meta property="og:locale">
+<meta property="article:author" content="Jackie Bao">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="The Wandering Isle" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">The Wandering Isle</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://hex.jackiebao.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-PHP7_new_operator" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/PHP7_new_operator/" class="article-date">
+  <time datetime="2018-07-22T09:22:44.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/PHP7_new_operator/">PHP7新增加的两种运算符</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>太空舱运算符:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$a = <span class="number">1</span> &lt;=&gt; <span class="number">1</span>;</span><br><span class="line"><span class="comment">//左边等于右边 $a=0</span></span><br><span class="line">$b = <span class="number">1</span> &lt;=&gt; <span class="number">2</span>;</span><br><span class="line"><span class="comment">//左边小于右边 $b=-1</span></span><br><span class="line">$c = <span class="number">2</span> &lt;=&gt; <span class="number">1</span>;</span><br><span class="line"><span class="comment">//左边大于右边 $c=1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$a = <span class="keyword">null</span>;</span><br><span class="line">$b = <span class="keyword">null</span>;</span><br><span class="line">$c = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">$d = $a ?? $b ?? $c ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//$d = 1, 空合并运算从左到右取第一个非null值</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/PHP7_new_operator/" data-id="cklhgn0om00011ctuz61k1bc8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-PHP_trait" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/PHP_trait/" class="article-date">
+  <time datetime="2018-07-22T09:18:28.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/PHP_trait/">PHP trait特性</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>trait是PHP自5.4版本之后加入的一种新的代码复用机制，是一种细粒度代码复用的方法。官方文档对于trait给出的解释是：</p>
+<blockquote>
+<p>自 PHP 5.4.0 起，PHP 实现了一种代码复用的方法，称为 trait。<br>Trait 是为类似 PHP 的单继承语言而准备的一种代码复用机制。Trait 为了减少单继承语言的限制，使开发人员能够自由地在不同层次结构内独立的类中复用 method。Trait 和 Class 组合的语义定义了一种减少复杂性的方式，避免传统多继承和 Mixin 类相关典型问题。<br>Trait 和 Class 相似，但仅仅旨在用细粒度和一致的方式来组合功能。 无法通过 trait 自身来实例化。它为传统继承增加了水平特性的组合；也就是说，应用的几个 Class 之间不需要继承。</p>
+</blockquote>
+<p>trait 单词的释义为特性，很好的解释了trait这种方法的特点，可以在不同层次结构内独立的类中复用方法和属性，以一种易于理解的方式来举例，在网络游戏《魔兽世界》当中，法师，潜行者，战士是三个玩家可以操控的职业,三个职业是平等的，可以理解为继承自“角色”这一父类, 因为不管玩家使用什么职业，都能够使用坐骑，所以，父类“Character”中便可以添加一个ride()方法，表示使用坐骑，这样所有继承自“Character”的职业便都有了使用坐骑的能力。而不同的职业又有各自的特点，比如说，法师能够使用暴风雪，潜行者能够潜行，战士能够冲锋，因此，“mage”类中可以增加“blizzard”方法表示法师使用暴风雪技能，“rogue”类中加入“stealth”方法表示潜行者使用潜行技能，“worrior”类中可以增加“charge”方法表示战士使用冲锋技能，这样各职业的特点便能体现出来。而当分配装备时，问题就来了，众所周知《魔兽世界》的装备系统十分庞大，护甲分为布甲、皮甲、锁甲、板甲四种不同的种类，而不同的职业能够装备的护甲类型不完全相同，有些职业只可以装备一种类型的护甲，而有的职业可以装备大部分类型的护甲，这种时候，为了避免重复定义，trait就能够派上用场了。我们在这里定义“布甲”（cloth armour）、“皮甲”（leather armour）、“板甲”（plate armour）三个不同的trait，表示一个职业可以装备某一种护甲，这样我们定义一个职业的时候，便可以通过插入trait来定义这个职业能够装备的护甲类型，而这样一个特性又是独立于职业之外的，多个职业可以共同享有一个特性，比如，战士既可以装备板甲，也可以装备布甲，这样在声明战士这个类的时候，便可以插入多条特性，来表示战士是具有作为一个全需党的条件的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">trait</span> ClothArmour</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">putOnClothArmour</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    <span class="comment">//穿上一件布甲</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">trait</span> LeatherArmour</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">putOnLeatherArmour</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    <span class="comment">//穿上一件皮甲</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">trait</span> PlateArmour</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">putOnPlateArmour</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    <span class="comment">//穿上一件板甲</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Character</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">ride</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//召唤坐骑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//法师</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mage</span> <span class="keyword">extends</span> <span class="title">Character</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">use</span> <span class="title">ClothArmour</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">blizzard</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//使用“暴风雪”</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//战士</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worrior</span> <span class="keyword">extends</span> <span class="title">Character</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">use</span> <span class="title">ClothArmour</span>,<span class="title">LeatherArmour</span>,<span class="title">PlateArmour</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">charge</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//使用“冲锋”</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//潜行者</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">rogue</span> <span class="keyword">extends</span> <span class="title">Character</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">use</span> <span class="title">ClothArmour</span>,<span class="title">LeatherArmour</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">stealth</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//使用“潜行”</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$worrior = <span class="keyword">new</span> Worrior();</span><br><span class="line"><span class="comment">//继承自父类的方法，召唤坐骑</span></span><br><span class="line">$worrior-&gt;ride();</span><br><span class="line"><span class="comment">//自身的方法，使用冲锋技能</span></span><br><span class="line">$worrior-&gt;charge();</span><br><span class="line"><span class="comment">//战士能够装备布甲</span></span><br><span class="line">$worrior-&gt;putOnClothArmour();</span><br><span class="line"><span class="comment">//战士能够装备皮甲</span></span><br><span class="line">$worrior-&gt;putOnLeatherArmour();</span><br><span class="line"> <span class="comment">//战士能够装备板甲</span></span><br><span class="line">$worrior-&gt;putOnPlateArmour();</span><br></pre></td></tr></table></figure>
+<p>在这个事例中，就可以看到trait最基础的使用方法，trait其实是一组描述了某个特性的一些属性和方法的集合，能够很方便地进行组合与应用，耦合性低，易于维护，同时特性的引入也在某些程度上减少了层层继承之后必须不断追溯父类寻找某些方法的情况，提高的代码的可读性，对于提升开发工作的效率以及开发团队合作是非常好的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/PHP_trait/" data-id="cklhgn0oq00041ctuamehvt5i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-php_string_spliter" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/php_string_spliter/" class="article-date">
+  <time datetime="2018-07-22T09:15:43.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/php_string_spliter/">php字符串拆分函数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">str_split_utf8</span><span class="params">($str)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    $split = <span class="number">1</span>;  </span><br><span class="line">    $array = <span class="keyword">array</span>();  </span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; strlen($str);) &#123;  </span><br><span class="line">        $value = ord($str[$i]);  </span><br><span class="line">        <span class="keyword">if</span> ($value &gt; <span class="number">127</span>) &#123;  </span><br><span class="line">            <span class="keyword">if</span> ($value &gt;= <span class="number">192</span> &amp;&amp; $value &lt;= <span class="number">223</span>) &#123;  </span><br><span class="line">                $split = <span class="number">2</span>;  </span><br><span class="line">            &#125; <span class="keyword">elseif</span> ($value &gt;= <span class="number">224</span> &amp;&amp; $value &lt;= <span class="number">239</span>) &#123;  </span><br><span class="line">                $split = <span class="number">3</span>;  </span><br><span class="line">            &#125; <span class="keyword">elseif</span> ($value &gt;= <span class="number">240</span> &amp;&amp; $value &lt;= <span class="number">247</span>) &#123;  </span><br><span class="line">                $split = <span class="number">4</span>;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">            $split = <span class="number">1</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">        $key = <span class="keyword">null</span>;  </span><br><span class="line">        <span class="keyword">for</span> ($j = <span class="number">0</span>; $j &lt; $split; $j++, $i++) &#123;  </span><br><span class="line">            $key .= $str[$i];  </span><br><span class="line">        &#125;  </span><br><span class="line">        array_push($array, $key);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> $array;  </span><br><span class="line">&#125;  </span><br><span class="line">$str = <span class="string">'飞流直下三千尺，疑是银河落九天'</span>;</span><br><span class="line">print_r(str_split_utf8($str));</span><br></pre></td></tr></table></figure>
+<p>输出结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Array</span><br><span class="line">(</span><br><span class="line">    [0] =&gt; 飞</span><br><span class="line">    [1] =&gt; 流</span><br><span class="line">    [2] =&gt; 直</span><br><span class="line">    [3] =&gt; 下</span><br><span class="line">    [4] =&gt; 三</span><br><span class="line">    [5] =&gt; 千</span><br><span class="line">    [6] =&gt; 尺</span><br><span class="line">    [7] =&gt; ，</span><br><span class="line">    [8] =&gt; 疑</span><br><span class="line">    [9] =&gt; 是</span><br><span class="line">    [10] =&gt; 银</span><br><span class="line">    [11] =&gt; 河</span><br><span class="line">    [12] =&gt; 落</span><br><span class="line">    [13] =&gt; 九</span><br><span class="line">    [14] =&gt; 天</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/php_string_spliter/" data-id="cklhgn0pq001k1ctu140xxu7f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-install_openssl" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/install_openssl/" class="article-date">
+  <time datetime="2018-07-22T09:11:14.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/install_openssl/">windows 环境下php安装openssl证书</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>新的电脑安装了PHP、设置好环境变量之后安装了composer，想要通过composer安装Yii2，结果出现了如下报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[Composer\Downloader\TransportException]</span><br><span class="line">The &quot;https://packagist.org/packages.json&quot; file could not be downloaded: SSL</span><br><span class="line"> operation failed with code 1. OpenSSL Error messages:</span><br><span class="line">error:14090086:SSL routines:ssl3_get_server_certificate:certificate verify</span><br><span class="line">failed</span><br><span class="line">Failed to enable crypto</span><br><span class="line">failed to open stream: operation failed</span><br></pre></td></tr></table></figure>
+<p>检查发现php.ini里面的extension=php_openssl.dll已开启,如提示所说问题的原因是证书认证失败。</p>
+<p>解决方法：</p>
+<p> <a href="http://curl.haxx.se/docs/caextract.html" target="_blank" rel="noopener">http://curl.haxx.se/docs/caextract.html</a> 从该网址下载证书文件cacert.pem，然后打开php.ini，找到 openssl.cafile= </p>
+<p>添加下载证书文件的位置（例如：openssl.cafile=”E:/php-5.6.27/ext/cacert.pem”），问题解决。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/install_openssl/" data-id="cklhgn0pp001h1ctudia4ynf4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-array" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/array/" class="article-date">
+  <time datetime="2018-07-22T09:07:15.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/array/">按照多个键值对数组进行分组合并</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>简介：</p>
+<p>$array 为一堆数组，各数组键值为固定</p>
+<p>$keys为分组依据，在$array中按照$keys所指定的键值将数组分组，并且将除$keys指定键值对应的值以外的值合并</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">groupBy</span><span class="params">($array,$keys)</span></span>&#123;</span><br><span class="line">    $i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>($i &lt; sizeof($array))&#123;</span><br><span class="line">        $x = sizeof($array) - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> ($x &gt; $i) &#123;</span><br><span class="line">            <span class="comment">//取数组交集并返回交集，保留键名</span></span><br><span class="line">            $temp = array_intersect_assoc($array[$i],$array[$x]);</span><br><span class="line">            <span class="keyword">if</span>(!<span class="keyword">empty</span>($temp))&#123;</span><br><span class="line">                <span class="comment">// 取键名交集，并做比较，如果相交等于分组依据的键名，则说明两个子数组可以合并</span></span><br><span class="line">                <span class="keyword">if</span>(array_intersect_assoc($keys,array_keys($temp)) == $keys)&#123;</span><br><span class="line">                    <span class="keyword">foreach</span> ($array[$i] <span class="keyword">as</span> $k =&gt; $v) &#123;</span><br><span class="line">                        <span class="keyword">if</span>(!in_array($k,$keys))&#123;</span><br><span class="line">                            $array[$i][$k] += $array[$x][$k];</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//将合并部分移出数组</span></span><br><span class="line">                    array_splice($array,$x,<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            $x--;</span><br><span class="line">        &#125;</span><br><span class="line">        $i++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $array;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试：</span></span><br><span class="line">$arr = <span class="keyword">array</span>(</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Guangdong'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Guangzhou'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">25</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">15</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">43</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Guangdong'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Guangzhou'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">25</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">15</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">43</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Guangdong'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Guangzhou'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">33</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">24</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">32</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Jiangsu'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Nanjing'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">25</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">115</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">423</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Jiangsu'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Nanjing'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">0</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">15</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">1</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Jiangsu'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Nanjing'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">5</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">2</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">4</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Jiangsu'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Nanjing'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">5</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">2</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">4</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Jiangsu'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Nanjing'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">5</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">2</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">4</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Guangdong'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Guangzhou'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">1</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">2</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">3</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Shanghai'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Shanghai'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">25</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">15</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">43</span>,</span><br><span class="line">        ),</span><br><span class="line">                <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Jiangsu'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Nanjing'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">25</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">15</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">43</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Henan'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Zhengzhou'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">25</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">15</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">43</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Hunan'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Changsha'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">25</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">15</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">43</span>,</span><br><span class="line">        ),</span><br><span class="line">        <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'province'</span> =&gt; <span class="string">'Hunan'</span>,</span><br><span class="line">            <span class="string">'city'</span> =&gt; <span class="string">'Changsha'</span>,</span><br><span class="line">            <span class="string">'num1'</span> =&gt; <span class="number">3</span>,</span><br><span class="line">            <span class="string">'num2'</span> =&gt; <span class="number">4</span>,</span><br><span class="line">            <span class="string">'num3'</span> =&gt; <span class="number">5</span>,</span><br><span class="line">        ),</span><br><span class="line">    );</span><br><span class="line">$keys = <span class="keyword">array</span>(</span><br><span class="line">        <span class="string">'province'</span>,</span><br><span class="line">        <span class="string">'city'</span></span><br><span class="line">    );</span><br><span class="line">$arr = groupBy($arr,$keys);</span><br></pre></td></tr></table></figure>
+<p>输出结果:</p>
+<img src="/2018/07/22/array/1.png" title="计算结果">
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/array/" data-id="cklhgn0p3000j1ctu56w154td" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-jdbc_driver" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/jdbc_driver/" class="article-date">
+  <time datetime="2018-07-22T09:03:47.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/jdbc_driver/">JDBC连接数据库驱动及URL对应表</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.blogjava.net/fannie/archive/2012/08/14/385456.html" target="_blank" rel="noopener">原文地址</a></p>
+<p>数据库驱动及URL对应表</p>
+<img src="/2018/07/22/jdbc_driver/1.png" title="数据库驱动对应表">
+<p>注：一般在win7中，数据连接时默认生成的URL中的驱动类型是Access2007，如果连接失败，则本地安装Access2007或以上版本驱动，或者将默认生成的URL中驱动类型改成Access2003类型。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/jdbc_driver/" data-id="cklhgn0pk001a1ctusgi5nf4z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-closure" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/closure/" class="article-date">
+  <time datetime="2018-07-22T08:46:01.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/closure/">PHP 闭包（匿名函数）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>PHP 在 5.3引入了匿名函数closure的概念，这个也就是俗称的闭包，指的是包含有未绑定到特定对象的变量（自由变量）的代码块</p>
+<p>创建closure对象：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$foo = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;;<span class="comment">//因为相当于将一个closure对象赋值给对象，要遵循对象赋值语法，语句结束需要添加分号</span></span><br><span class="line">$foo();</span><br></pre></td></tr></table></figure>
+<p>闭包声明参数以及调用外部变量：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$value = <span class="string">'hello'</span>;</span><br><span class="line">$foo = <span class="function"><span class="keyword">function</span><span class="params">($bar)</span> <span class="title">use</span> <span class="params">($value)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> $value . $bar;</span><br><span class="line">&#125;;</span><br><span class="line">$foo(<span class="string">'world'</span>);<span class="comment">//输出helloworld</span></span><br><span class="line"><span class="comment">/*PHP版本5.4以上$this才可用于匿名函数*/</span></span><br></pre></td></tr></table></figure>
+<p>使用引用和不使用引用，根据官方文档：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$result = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">$one = <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123; var_dump($result); &#125;;</span><br><span class="line"></span><br><span class="line">$two = <span class="function"><span class="keyword">function</span><span class="params">()</span> <span class="title">use</span> <span class="params">($result)</span></span></span><br><span class="line"><span class="function"></span>&#123; var_dump($result); &#125;;</span><br><span class="line"></span><br><span class="line">$three = <span class="function"><span class="keyword">function</span><span class="params">()</span> <span class="title">use</span> <span class="params">(&amp;$result)</span></span></span><br><span class="line"><span class="function"></span>&#123; var_dump($result); &#125;;</span><br><span class="line"></span><br><span class="line">$result++;</span><br><span class="line"></span><br><span class="line">$one();    <span class="comment">// outputs NULL: $result is not in scope</span></span><br><span class="line">$two();    <span class="comment">// outputs int(0): $result was copied</span></span><br><span class="line">$three();    <span class="comment">// outputs int(1)</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>不使用引用时，在闭包内部的$result实际是声明时候对外部变量$result的复制,因此闭包内部对$result的处理不会影响到外部变量result，而使用引用则闭包内$result直接指向外部变量$result的内存地址，因此会对外部$result造成影响：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">$x = <span class="number">0</span>;</span><br><span class="line">$foo = <span class="function"><span class="keyword">function</span><span class="params">()</span> <span class="title">use</span> <span class="params">($x)</span></span>&#123;</span><br><span class="line">    $x++;</span><br><span class="line">    <span class="keyword">echo</span> $x;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">$bar = <span class="function"><span class="keyword">function</span><span class="params">()</span> <span class="title">use</span> <span class="params">(&amp;$x)</span></span>&#123;</span><br><span class="line">    $x++;</span><br><span class="line">    <span class="keyword">echo</span> $x;</span><br><span class="line">&#125;;</span><br><span class="line">$foo();</span><br><span class="line">$foo();</span><br><span class="line">$bar();</span><br><span class="line">$bar();</span><br><span class="line"><span class="comment">//输出 11 12</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>因为闭包的存在，我们便可以在不需要在外部声明回调函数的情况下使用一些类似于array_walk的方法，比如官方手册中提供的购物车的方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 一个基本的购物车，包括一些已经添加的商品和每种商品的数量。</span></span><br><span class="line"><span class="comment">// 其中有一个方法用来计算购物车中所有商品的总价格，该方法使</span></span><br><span class="line"><span class="comment">// 用了一个 closure 作为回调函数。</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cart</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">const</span> PRICE_BUTTER  = <span class="number">1.00</span>;</span><br><span class="line">    <span class="keyword">const</span> PRICE_MILK    = <span class="number">3.00</span>;</span><br><span class="line">    <span class="keyword">const</span> PRICE_EGGS    = <span class="number">6.95</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span>   $products = <span class="keyword">array</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">($product, $quantity)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;products[$product] = $quantity;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getQuantity</span><span class="params">($product)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;products[$product]) ? <span class="keyword">$this</span>-&gt;products[$product] :</span><br><span class="line">               <span class="keyword">FALSE</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getTotal</span><span class="params">($tax)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $total = <span class="number">0.00</span>;</span><br><span class="line">        </span><br><span class="line">        $callback =</span><br><span class="line">            <span class="function"><span class="keyword">function</span> <span class="params">($quantity, $product)</span> <span class="title">use</span> <span class="params">($tax, &amp;$total)</span></span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                $pricePerItem = constant(<span class="keyword">__CLASS__</span> . <span class="string">"::PRICE_"</span> .</span><br><span class="line">                    strtoupper($product));</span><br><span class="line">                $total += ($pricePerItem * $quantity) * ($tax + <span class="number">1.0</span>);</span><br><span class="line">            &#125;;</span><br><span class="line">        </span><br><span class="line">        array_walk(<span class="keyword">$this</span>-&gt;products, $callback);</span><br><span class="line">        <span class="keyword">return</span> round($total, <span class="number">2</span>);;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$my_cart = <span class="keyword">new</span> Cart;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 往购物车里添加条目</span></span><br><span class="line">$my_cart-&gt;add(<span class="string">'butter'</span>, <span class="number">1</span>);</span><br><span class="line">$my_cart-&gt;add(<span class="string">'milk'</span>, <span class="number">3</span>);</span><br><span class="line">$my_cart-&gt;add(<span class="string">'eggs'</span>, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打出出总价格，其中有 5% 的销售税.</span></span><br><span class="line"><span class="keyword">print</span> $my_cart-&gt;getTotal(<span class="number">0.05</span>) . <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">// 最后结果是 54.29</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/closure/" data-id="cklhgn0pb000u1ctubnbm3ae5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-wampserver_offline" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/wampserver_offline/" class="article-date">
+  <time datetime="2018-07-22T08:35:37.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/22/wampserver_offline/">系统升级win10后，wampserver开启处于offline的解决方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>系统升级win10之后，wampserver开启的时候一直处于黄灯offline的状态，查询之后得知win10操作系统会默认占用80端口，于是打开apache的httpd.conf，将listen 80 改为 8088，问题即解决</p>
+<p>补充，通过修改httpd配置之后只能通过localhost：8088访问，不是特别方便，所以还是得从根本上解决系统默认占用80端口的问题</p>
+<p>用系统管理员身份打开命令提示符，执行net stop http命令</p>
+<img src="/2018/07/22/wampserver_offline/1.png" title="执行命令">
+<p>停止win10 http service 服务之后，再执行sc config http start=disabled</p>
+<p>将apache httpd.conf设置端口号改回80，refresh，亮绿灯</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/wampserver_offline/" data-id="cklhgn0q000291ctu3vusk1v1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wamp/" rel="tag">wamp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/old-archives/">旧文搬运</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wamp/" rel="tag">wamp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 13.33px;">nodejs</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/wamp/" style="font-size: 10px;">wamp</a> <a href="/tags/windows/" style="font-size: 13.33px;">windows</a> <a href="/tags/old-archives/" style="font-size: 20px;">旧文搬运</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/03/14/crawler3/">PHP 爬虫体验（三） - 使用PHP + puppeteer爬取js动态渲染的页面内容</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/08/nvm_error/">解决nvm安装的node使用sudo npm报错的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/22/crawler2/">PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/21/composer-vcs/">composer 更新项目使用VCS源</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/15/php-crawler-1/">PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Jackie Bao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

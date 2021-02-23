@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>linux系统下mysql忘记密码处理 | The Wandering Isle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近开始重新拾掇自己优惠时贪便宜买的一台京东云主机，然而早已经将当年集成环境一键安装时设置的mysql密码给忘了。 于是度娘了解决办法，大致分为以下步骤： 1234567891011121314151617#停止mysqldservice mysqld stop#以不检查权限的方式启动mysqlmysqld --skip-grant-tables&amp;#用root帐号以空密码的形式登录mysq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux系统下mysql忘记密码处理">
+<meta property="og:url" content="http://hex.jackiebao.cn/2018/07/22/find_mysql_password/index.html">
+<meta property="og:site_name" content="The Wandering Isle">
+<meta property="og:description" content="最近开始重新拾掇自己优惠时贪便宜买的一台京东云主机，然而早已经将当年集成环境一键安装时设置的mysql密码给忘了。 于是度娘了解决办法，大致分为以下步骤： 1234567891011121314151617#停止mysqldservice mysqld stop#以不检查权限的方式启动mysqlmysqld --skip-grant-tables&amp;#用root帐号以空密码的形式登录mysq">
+<meta property="og:locale">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/find_mysql_password/1.png">
+<meta property="article:published_time" content="2018-07-22T09:24:17.000Z">
+<meta property="article:modified_time" content="2021-02-23T03:35:28.718Z">
+<meta property="article:author" content="Jackie Bao">
+<meta property="article:tag" content="旧文搬运">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hex.jackiebao.cn/2018/07/22/find_mysql_password/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="The Wandering Isle" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">The Wandering Isle</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://hex.jackiebao.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-find_mysql_password" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/find_mysql_password/" class="article-date">
+  <time datetime="2018-07-22T09:24:17.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      linux系统下mysql忘记密码处理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近开始重新拾掇自己优惠时贪便宜买的一台京东云主机，然而早已经将当年集成环境一键安装时设置的mysql密码给忘了。</p>
+<p>于是度娘了解决办法，大致分为以下步骤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#停止mysqld</span><br><span class="line"></span><br><span class="line">service mysqld stop</span><br><span class="line"></span><br><span class="line">#以不检查权限的方式启动mysql</span><br><span class="line"></span><br><span class="line">mysqld --skip-grant-tables&amp;</span><br><span class="line"></span><br><span class="line">#用root帐号以空密码的形式登录mysql</span><br><span class="line"></span><br><span class="line">mysql -u root</span><br><span class="line"></span><br><span class="line">#进入mysql命令行界面之后，执行以下命令 分别是 修改root用户密码、重新加载权限、退出mysql命令行界面</span><br><span class="line"></span><br><span class="line">mysql&gt; update mysql.user set password=PASSWORD(&apos;新密码&apos;) where user=&apos;root&apos;;  </span><br><span class="line">mysql&gt; flush privileges;  </span><br><span class="line">mysql&gt; quit</span><br></pre></td></tr></table></figure>
+<p>结果执行之后报这个错误 “Unknown column ‘password’ in ‘field list’”。</p>
+<img src="/2018/07/22/find_mysql_password/1.png" title="报错">
+<p>后查询得知mysql在5.7版本下已经没有password这个字段了，同一字段换成了authentication_string,因此对之前的步骤进行修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#修改密码的命令改为：</span><br><span class="line">mysql&gt; update mysql.user set authentication_string=password(新密码) where user=&apos;root&apos;;#修改密码</span><br><span class="line">mysql&gt; flush priviledge;#重载权限</span><br><span class="line">mysql&gt; quit;#退出mysql命令行</span><br></pre></td></tr></table></figure>
+<p>密码修改成功</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/find_mysql_password/" data-id="cklhgn0pi00171ctur75j4377" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/07/22/diffrences_between_static_and_self/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          PHP static关键字和self关键字的区别
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/22/PHP7_new_operator/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">PHP7新增加的两种运算符</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/old-archives/">旧文搬运</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wamp/" rel="tag">wamp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 13.33px;">nodejs</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/wamp/" style="font-size: 10px;">wamp</a> <a href="/tags/windows/" style="font-size: 13.33px;">windows</a> <a href="/tags/old-archives/" style="font-size: 20px;">旧文搬运</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/03/14/crawler3/">PHP 爬虫体验（三） - 使用PHP + puppeteer爬取js动态渲染的页面内容</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/08/nvm_error/">解决nvm安装的node使用sudo npm报错的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/22/crawler2/">PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/21/composer-vcs/">composer 更新项目使用VCS源</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/15/php-crawler-1/">PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Jackie Bao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

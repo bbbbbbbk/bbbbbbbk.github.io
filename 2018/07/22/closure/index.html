@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>PHP 闭包（匿名函数） | The Wandering Isle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="PHP 在 5.3引入了匿名函数closure的概念，这个也就是俗称的闭包，指的是包含有未绑定到特定对象的变量（自由变量）的代码块 创建closure对象： 123$foo &#x3D; function()&amp;#123;&amp;#125;;&#x2F;&#x2F;因为相当于将一个closure对象赋值给对象，要遵循对象赋值语法，语句结束需要添加分号$foo(); 闭包声明参数以及调用外部变量： 123456$value &#x3D; &#39;hel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 闭包（匿名函数）">
+<meta property="og:url" content="http://hex.jackiebao.cn/2018/07/22/closure/index.html">
+<meta property="og:site_name" content="The Wandering Isle">
+<meta property="og:description" content="PHP 在 5.3引入了匿名函数closure的概念，这个也就是俗称的闭包，指的是包含有未绑定到特定对象的变量（自由变量）的代码块 创建closure对象： 123$foo &#x3D; function()&amp;#123;&amp;#125;;&#x2F;&#x2F;因为相当于将一个closure对象赋值给对象，要遵循对象赋值语法，语句结束需要添加分号$foo(); 闭包声明参数以及调用外部变量： 123456$value &#x3D; &#39;hel">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-07-22T08:46:01.000Z">
+<meta property="article:modified_time" content="2021-02-23T03:35:28.716Z">
+<meta property="article:author" content="Jackie Bao">
+<meta property="article:tag" content="旧文搬运">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="The Wandering Isle" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">The Wandering Isle</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://hex.jackiebao.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-closure" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/closure/" class="article-date">
+  <time datetime="2018-07-22T08:46:01.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/old-archives/">旧文搬运</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      PHP 闭包（匿名函数）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>PHP 在 5.3引入了匿名函数closure的概念，这个也就是俗称的闭包，指的是包含有未绑定到特定对象的变量（自由变量）的代码块</p>
+<p>创建closure对象：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$foo = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;;<span class="comment">//因为相当于将一个closure对象赋值给对象，要遵循对象赋值语法，语句结束需要添加分号</span></span><br><span class="line">$foo();</span><br></pre></td></tr></table></figure>
+<p>闭包声明参数以及调用外部变量：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$value = <span class="string">'hello'</span>;</span><br><span class="line">$foo = <span class="function"><span class="keyword">function</span><span class="params">($bar)</span> <span class="title">use</span> <span class="params">($value)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> $value . $bar;</span><br><span class="line">&#125;;</span><br><span class="line">$foo(<span class="string">'world'</span>);<span class="comment">//输出helloworld</span></span><br><span class="line"><span class="comment">/*PHP版本5.4以上$this才可用于匿名函数*/</span></span><br></pre></td></tr></table></figure>
+<p>使用引用和不使用引用，根据官方文档：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$result = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">$one = <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123; var_dump($result); &#125;;</span><br><span class="line"></span><br><span class="line">$two = <span class="function"><span class="keyword">function</span><span class="params">()</span> <span class="title">use</span> <span class="params">($result)</span></span></span><br><span class="line"><span class="function"></span>&#123; var_dump($result); &#125;;</span><br><span class="line"></span><br><span class="line">$three = <span class="function"><span class="keyword">function</span><span class="params">()</span> <span class="title">use</span> <span class="params">(&amp;$result)</span></span></span><br><span class="line"><span class="function"></span>&#123; var_dump($result); &#125;;</span><br><span class="line"></span><br><span class="line">$result++;</span><br><span class="line"></span><br><span class="line">$one();    <span class="comment">// outputs NULL: $result is not in scope</span></span><br><span class="line">$two();    <span class="comment">// outputs int(0): $result was copied</span></span><br><span class="line">$three();    <span class="comment">// outputs int(1)</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>不使用引用时，在闭包内部的$result实际是声明时候对外部变量$result的复制,因此闭包内部对$result的处理不会影响到外部变量result，而使用引用则闭包内$result直接指向外部变量$result的内存地址，因此会对外部$result造成影响：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">$x = <span class="number">0</span>;</span><br><span class="line">$foo = <span class="function"><span class="keyword">function</span><span class="params">()</span> <span class="title">use</span> <span class="params">($x)</span></span>&#123;</span><br><span class="line">    $x++;</span><br><span class="line">    <span class="keyword">echo</span> $x;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">$bar = <span class="function"><span class="keyword">function</span><span class="params">()</span> <span class="title">use</span> <span class="params">(&amp;$x)</span></span>&#123;</span><br><span class="line">    $x++;</span><br><span class="line">    <span class="keyword">echo</span> $x;</span><br><span class="line">&#125;;</span><br><span class="line">$foo();</span><br><span class="line">$foo();</span><br><span class="line">$bar();</span><br><span class="line">$bar();</span><br><span class="line"><span class="comment">//输出 11 12</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>因为闭包的存在，我们便可以在不需要在外部声明回调函数的情况下使用一些类似于array_walk的方法，比如官方手册中提供的购物车的方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 一个基本的购物车，包括一些已经添加的商品和每种商品的数量。</span></span><br><span class="line"><span class="comment">// 其中有一个方法用来计算购物车中所有商品的总价格，该方法使</span></span><br><span class="line"><span class="comment">// 用了一个 closure 作为回调函数。</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cart</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">const</span> PRICE_BUTTER  = <span class="number">1.00</span>;</span><br><span class="line">    <span class="keyword">const</span> PRICE_MILK    = <span class="number">3.00</span>;</span><br><span class="line">    <span class="keyword">const</span> PRICE_EGGS    = <span class="number">6.95</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span>   $products = <span class="keyword">array</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">($product, $quantity)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;products[$product] = $quantity;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getQuantity</span><span class="params">($product)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;products[$product]) ? <span class="keyword">$this</span>-&gt;products[$product] :</span><br><span class="line">               <span class="keyword">FALSE</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getTotal</span><span class="params">($tax)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $total = <span class="number">0.00</span>;</span><br><span class="line">        </span><br><span class="line">        $callback =</span><br><span class="line">            <span class="function"><span class="keyword">function</span> <span class="params">($quantity, $product)</span> <span class="title">use</span> <span class="params">($tax, &amp;$total)</span></span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                $pricePerItem = constant(<span class="keyword">__CLASS__</span> . <span class="string">"::PRICE_"</span> .</span><br><span class="line">                    strtoupper($product));</span><br><span class="line">                $total += ($pricePerItem * $quantity) * ($tax + <span class="number">1.0</span>);</span><br><span class="line">            &#125;;</span><br><span class="line">        </span><br><span class="line">        array_walk(<span class="keyword">$this</span>-&gt;products, $callback);</span><br><span class="line">        <span class="keyword">return</span> round($total, <span class="number">2</span>);;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$my_cart = <span class="keyword">new</span> Cart;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 往购物车里添加条目</span></span><br><span class="line">$my_cart-&gt;add(<span class="string">'butter'</span>, <span class="number">1</span>);</span><br><span class="line">$my_cart-&gt;add(<span class="string">'milk'</span>, <span class="number">3</span>);</span><br><span class="line">$my_cart-&gt;add(<span class="string">'eggs'</span>, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打出出总价格，其中有 5% 的销售税.</span></span><br><span class="line"><span class="keyword">print</span> $my_cart-&gt;getTotal(<span class="number">0.05</span>) . <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">// 最后结果是 54.29</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hex.jackiebao.cn/2018/07/22/closure/" data-id="cklhgn0pb000u1ctubnbm3ae5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/07/22/jdbc_driver/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          JDBC连接数据库驱动及URL对应表
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/22/wampserver_offline/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">系统升级win10后，wampserver开启处于offline的解决方法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/old-archives/">旧文搬运</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wamp/" rel="tag">wamp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/old-archives/" rel="tag">旧文搬运</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nodejs/" style="font-size: 13.33px;">nodejs</a> <a href="/tags/php/" style="font-size: 16.67px;">php</a> <a href="/tags/wamp/" style="font-size: 10px;">wamp</a> <a href="/tags/windows/" style="font-size: 13.33px;">windows</a> <a href="/tags/old-archives/" style="font-size: 20px;">旧文搬运</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/03/14/crawler3/">PHP 爬虫体验（三） - 使用PHP + puppeteer爬取js动态渲染的页面内容</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/08/nvm_error/">解决nvm安装的node使用sudo npm报错的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/22/crawler2/">PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/21/composer-vcs/">composer 更新项目使用VCS源</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/15/php-crawler-1/">PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Jackie Bao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
