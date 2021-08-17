@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hex.jackiebao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="自从使用hexo在github page更新博客之后，我每次在cnblog上发布文章，需要手动再更新hexo。hexo使用markdown格式来写文章，手动更新需要对文章本身内容进行转化，做成md文件再进行上传，后来就想到，本身爬虫就可以对页面中的各种元素进行提取，同时markdown使用的是标记语法，那么使用爬虫分析文章元素，提取主要内容并且根据模板自动生成对应的md文件理论上是可行的。 由于我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章">
+<meta property="og:url" content="http://hex.jackiebao.cn/2018/11/22/crawler2/index.html">
+<meta property="og:site_name" content="The Wandering Isle">
+<meta property="og:description" content="自从使用hexo在github page更新博客之后，我每次在cnblog上发布文章，需要手动再更新hexo。hexo使用markdown格式来写文章，手动更新需要对文章本身内容进行转化，做成md文件再进行上传，后来就想到，本身爬虫就可以对页面中的各种元素进行提取，同时markdown使用的是标记语法，那么使用爬虫分析文章元素，提取主要内容并且根据模板自动生成对应的md文件理论上是可行的。 由于我">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-22T03:26:00.000Z">
+<meta property="article:modified_time" content="2021-08-17T06:22:51.958Z">
+<meta property="article:author" content="Jackie Bao">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="爬虫">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://hex.jackiebao.cn/2018/11/22/crawler2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hex.jackiebao.cn/2018/11/22/crawler2/","path":"2018/11/22/crawler2/","title":"PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章 | The Wandering Isle</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">The Wandering Isle</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Jackie's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jackie Bao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hex.jackiebao.cn/2018/11/22/crawler2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jackie Bao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Wandering Isle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PHP 爬虫体验（二） - 爬取cnblog单篇文章并且自动生成markdown格式hexo文章
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-22 11:26:00" itemprop="dateCreated datePublished" datetime="2018-11-22T11:26:00+08:00">2018-11-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-17 14:22:51" itemprop="dateModified" datetime="2021-08-17T14:22:51+08:00">2021-08-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>自从使用hexo在github page更新博客之后，我每次在cnblog上发布文章，需要手动再更新hexo。hexo使用markdown格式来写文章，手动更新需要对文章本身内容进行转化，做成md文件再进行上传，后来就想到，本身爬虫就可以对页面中的各种元素进行提取，同时markdown使用的是标记语法，那么使用爬虫分析文章元素，提取主要内容并且根据模板自动生成对应的md文件理论上是可行的。</p>
+<p>由于我的hexo博客使用的是默认布局，所以在hexo目录下直接执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new model</span><br></pre></td></tr></table></figure>
+
+<p>这样就生成了一个model.md文件，接下来就是把这个文件改装成所需的模板，打开model.md，能看到默认布局hexo文章只有一个简单的front-matter区域用来进行文章变量的指定：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: model</span><br><span class="line">date: 2018-11-22 09:49:22</span><br><span class="line">tags:</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>按照官方文档，front-matter用于文章变量的指定，本身不会作为markdown被解析，所以模板布局可以分为两个部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">&#123;&#123;front-matter&#125;&#125;</span><br><span class="line">---</span><br><span class="line">&#123;&#123;markdown&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来就是对文章元素的提取并且转化成相应的hexo文章内容，并且拼接填充至模板当中了。</p>
+<p>这里我简单封装了一个MarkdownGenerator类用来把文章转换成markdown文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Root</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">DomCrawler</span>\<span class="title">Crawler</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">Class</span> <span class="title">MarkdownGenerator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$client</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$crawler</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$url</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$assetPath</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$contentsArray</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$categories</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$tags</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$title</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$dateString</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$documentName</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 初始化，会在同目录下生成一个和文档同名的文件夹用来装静态资源</span></span><br><span class="line"><span class="comment">     * MarkdownGenerator constructor.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $documentName</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$documentName</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;documentName = <span class="variable">$documentName</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;assetPath = <span class="keyword">__DIR__</span> . <span class="string">&quot;/<span class="subst">&#123;$this-&gt;documentName&#125;</span>/&quot;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!is_dir(<span class="keyword">$this</span>-&gt;assetPath))&#123;</span><br><span class="line">            mkdir(<span class="keyword">$this</span>-&gt;assetPath, <span class="number">755</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$headers</span> = [</span><br><span class="line">            <span class="string">&#x27;user-agent&#x27;</span> =&gt; <span class="string">&#x27;Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36&#x27;</span>,</span><br><span class="line">        ];</span><br><span class="line">        <span class="keyword">$this</span>-&gt;client = <span class="keyword">new</span> Client([</span><br><span class="line">            <span class="string">&#x27;timeout&#x27;</span> =&gt; <span class="number">20</span>,</span><br><span class="line">            <span class="string">&#x27;headers&#x27;</span> =&gt; <span class="variable">$headers</span></span><br><span class="line">        ]);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;crawler = <span class="keyword">new</span> Crawler();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 设置文章url</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> string $url</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setUrl</span>(<span class="params"><span class="variable">$url</span> = <span class="string">&#x27;&#x27;</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;url = <span class="variable">$url</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 设置文章tags</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> array $tags</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setTags</span>(<span class="params"><span class="variable">$tags</span> = []</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;tags = <span class="variable">$tags</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 设置文章categories</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> array $categories</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setCategories</span>(<span class="params"><span class="variable">$categories</span> = []</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;categories = <span class="variable">$categories</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生成markdown文件</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">generate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$responseContent</span> = <span class="keyword">$this</span>-&gt;client-&gt;request(<span class="string">&#x27;GET&#x27;</span>, <span class="keyword">$this</span>-&gt;url)-&gt;getBody()-&gt;getContents();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;crawler-&gt;addHtmlContent(<span class="variable">$responseContent</span>);</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">//获取文章title</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;title = trim(<span class="keyword">$this</span>-&gt;crawler-&gt;filterXPath(<span class="string">&#x27;//h1[@class=&quot;postTitle&quot;]&#x27;</span>)-&gt;text());</span><br><span class="line">            <span class="comment">//获取文章发布时间</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;dateString = trim(<span class="keyword">$this</span>-&gt;crawler-&gt;filterXPath(<span class="string">&#x27;//span[@id=&quot;post-date&quot;]&#x27;</span>)-&gt;text());</span><br><span class="line">            <span class="comment">//处理文章正文部分</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;crawler-&gt;filterXPath(<span class="string">&#x27;//div[@id=&quot;cnblogs_post_body&quot;]&#x27;</span>)-&gt;children()-&gt;each(<span class="function"><span class="keyword">function</span>(<span class="params">Crawler <span class="variable">$node</span></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">$this</span>-&gt;contentsArray[] = <span class="keyword">$this</span>-&gt;parseParagraph(<span class="variable">$node</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="comment">//组装markdown正文部分</span></span><br><span class="line">            <span class="variable">$markdownContent</span> = <span class="keyword">$this</span>-&gt;makeContent();</span><br><span class="line">            <span class="variable">$frontMatter</span> = <span class="keyword">$this</span>-&gt;makeFrontMatter();</span><br><span class="line">            <span class="variable">$tmplate</span> = file_get_contents(<span class="string">&#x27;model.md&#x27;</span>);</span><br><span class="line">            <span class="variable">$content</span> = str_replace([<span class="string">&#x27;&#123;&#123;front-matter&#125;&#125;&#x27;</span>,<span class="string">&#x27;&#123;&#123;markdown&#125;&#125;&#x27;</span>],[<span class="variable">$frontMatter</span>, <span class="variable">$markdownContent</span>], <span class="variable">$tmplate</span>);</span><br><span class="line">            file_put_contents(<span class="keyword">$this</span>-&gt;documentName.<span class="string">&#x27;.md&#x27;</span>, <span class="variable">$content</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (\<span class="built_in">Throwable</span> <span class="variable">$e</span>)&#123;</span><br><span class="line">            print_r(<span class="variable">$e</span>-&gt;getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 处理段落</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Crawler $node</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> mixed|string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">parseParagraph</span>(<span class="params">Crawler <span class="variable">$node</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$res</span> = <span class="variable">$node</span>-&gt;html();</span><br><span class="line">        <span class="comment">//替换a标签,替换成markdown当中的格式</span></span><br><span class="line">        <span class="variable">$linkPattern</span> = <span class="string">&#x27;#&lt;a\b[^&gt;]+\bhref=\&quot;([^\&quot;]*)\&quot;[^&gt;]*&gt;([\s\S]*?)&lt;\/a&gt;#&#x27;</span>;</span><br><span class="line">        preg_match_all(<span class="variable">$linkPattern</span>, <span class="variable">$res</span>, <span class="variable">$links</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$links</span>[<span class="number">0</span>]))&#123;</span><br><span class="line">            <span class="keyword">foreach</span> (<span class="variable">$links</span>[<span class="number">2</span>] <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$link</span>)&#123;</span><br><span class="line">                <span class="variable">$l</span> = <span class="string">&quot;[<span class="subst">&#123;$link&#125;</span>](<span class="subst">&#123;$links[1][$k]&#125;</span>)&quot;</span>;</span><br><span class="line">                <span class="variable">$res</span> = str_replace(<span class="variable">$links</span>[<span class="number">0</span>][<span class="variable">$k</span>], <span class="variable">$l</span>, <span class="variable">$res</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//处理图片，图片这里使用hexo的图片标签,格式为&#123;% asset_img name.format alt %&#125;, 对应图片放在和post目录下和md文件同名文件夹中</span></span><br><span class="line">        <span class="variable">$imgPattern</span> = <span class="string">&#x27;#&lt;img\b[^&gt;]+\bsrc=&quot;([^&quot;]*)&quot;[^&gt;]+\balt=&quot;([^&quot;]*)&quot;[^&gt;]*&gt;#&#x27;</span>;</span><br><span class="line">        preg_match_all(<span class="variable">$imgPattern</span>, <span class="variable">$res</span>, <span class="variable">$imgs</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$imgs</span>[<span class="number">0</span>]))&#123;</span><br><span class="line">            <span class="keyword">foreach</span> (<span class="variable">$imgs</span>[<span class="number">2</span>] <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$img</span>)&#123;</span><br><span class="line">                <span class="variable">$imageUrl</span> = <span class="variable">$imgs</span>[<span class="number">1</span>][<span class="variable">$k</span>];</span><br><span class="line">                <span class="comment">//下载图片并放入对应的文件夹内</span></span><br><span class="line">                <span class="variable">$imageName</span> = pathinfo(<span class="variable">$imageUrl</span>)[<span class="string">&#x27;basename&#x27;</span>];</span><br><span class="line">                <span class="variable">$fileName</span> = <span class="keyword">$this</span>-&gt;assetPath . <span class="variable">$imageName</span>;</span><br><span class="line">                <span class="variable">$image</span> = <span class="keyword">$this</span>-&gt;client-&gt;get(<span class="variable">$imageUrl</span>)-&gt;getBody()-&gt;getContents();</span><br><span class="line">                file_put_contents(<span class="variable">$fileName</span>, <span class="variable">$image</span>);</span><br><span class="line">                <span class="variable">$i</span> = <span class="string">&quot;&#123;% asset_img <span class="subst">&#123;$imageName&#125;</span> <span class="subst">&#123;$imgs[2][$k]&#125;</span> %&#125;&quot;</span>;</span><br><span class="line">                <span class="variable">$res</span> = str_replace(<span class="variable">$imgs</span>[<span class="number">0</span>][<span class="variable">$k</span>], <span class="variable">$i</span>, <span class="variable">$res</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//处理内嵌代码</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$node</span>-&gt;attr(<span class="string">&#x27;class&#x27;</span>) === <span class="string">&#x27;cnblogs_code&#x27;</span>)&#123;</span><br><span class="line">            <span class="variable">$plainCodes</span> = trim(<span class="variable">$node</span>-&gt;text());</span><br><span class="line">            <span class="variable">$res</span> = htmlspecialchars(<span class="string">&quot;```&quot;</span>) .<span class="string">&quot;\n<span class="subst">&#123;$plainCodes&#125;</span>\n&quot;</span> . htmlspecialchars(<span class="string">&quot;```&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$res</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 组装markdown正文部分</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">makeContent</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (implode(<span class="keyword">$this</span>-&gt;contentsArray, <span class="string">&quot;\n\n&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 组装frontMatter部分</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">makeFrontMatter</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$res</span> = &lt;&lt;&lt;FM</span><br><span class="line">title: &#123;<span class="keyword">$this</span>-&gt;title&#125;</span><br><span class="line">date: &#123;<span class="keyword">$this</span>-&gt;dateString&#125;</span><br><span class="line">FM;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;categories))&#123;</span><br><span class="line">            <span class="variable">$res</span> .= <span class="string">&quot;\ncategories:\n- &quot;</span> . implode(<span class="keyword">$this</span>-&gt;categories, <span class="string">&quot;\n- &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;tags))&#123;</span><br><span class="line">            <span class="variable">$res</span> .= <span class="string">&quot;\ntags:\n- &quot;</span> . implode(<span class="keyword">$this</span>-&gt;tags, <span class="string">&quot;\n- &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$res</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来只用实例化generator类，然后设置各项属性，调用generate方法就能够抓取生成markdown文件了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$generator</span> = <span class="keyword">new</span> MarkdownGenerator(<span class="string">&#x27;test&#x27;</span>);</span><br><span class="line"><span class="variable">$generator</span>-&gt;setUrl(<span class="string">&#x27;https://www.cnblogs.com/jackiebao/p/8466232.html&#x27;</span>);</span><br><span class="line"><span class="variable">$generator</span>-&gt;setTags([<span class="string">&#x27;test1&#x27;</span>,<span class="string">&#x27;test2&#x27;</span>]);</span><br><span class="line"><span class="variable">$generator</span>-&gt;setCategories([<span class="string">&#x27;test_cat&#x27;</span>]);</span><br><span class="line"><span class="variable">$generator</span>-&gt;generate();</span><br></pre></td></tr></table></figure>
+
+<p> P.S.本篇文章hexo版本即为该脚本生成。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/php/" rel="tag"># php</a>
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/21/composer-vcs/" rel="prev" title="composer 更新项目使用VCS源">
+                  <i class="fa fa-chevron-left"></i> composer 更新项目使用VCS源
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/08/nvm_error/" rel="next" title="解决nvm安装的node使用sudo npm报错的问题">
+                  解决nvm安装的node使用sudo npm报错的问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackie Bao</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hex.jackiebao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="网络爬虫在大数据时代可以非常高效地自动进行数据的收集处理，而传统爬虫最简单也是最基本的功能实现原理即是下载网页，然后通过抽取页面元素来达到收集信息的目的。 PHP作为一门灵活易用的脚本语言，实现这些功能自然是不在话下的。 这里实现爬虫基于两个组件： guzzle：最好用的PHP HTTP客户端，用来进行爬取页面的请求，异步请求和并发请求功能可以用来实现一些后期的扩展功能。 dom-crawler：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫">
+<meta property="og:url" content="http://hex.jackiebao.cn/2018/10/15/php-crawler-1/index.html">
+<meta property="og:site_name" content="The Wandering Isle">
+<meta property="og:description" content="网络爬虫在大数据时代可以非常高效地自动进行数据的收集处理，而传统爬虫最简单也是最基本的功能实现原理即是下载网页，然后通过抽取页面元素来达到收集信息的目的。 PHP作为一门灵活易用的脚本语言，实现这些功能自然是不在话下的。 这里实现爬虫基于两个组件： guzzle：最好用的PHP HTTP客户端，用来进行爬取页面的请求，异步请求和并发请求功能可以用来实现一些后期的扩展功能。 dom-crawler：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-10-15T02:36:18.000Z">
+<meta property="article:modified_time" content="2021-08-17T06:22:51.963Z">
+<meta property="article:author" content="Jackie Bao">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://hex.jackiebao.cn/2018/10/15/php-crawler-1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hex.jackiebao.cn/2018/10/15/php-crawler-1/","path":"2018/10/15/php-crawler-1/","title":"PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫 | The Wandering Isle</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">The Wandering Isle</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Jackie's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jackie Bao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hex.jackiebao.cn/2018/10/15/php-crawler-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jackie Bao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Wandering Isle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PHP 爬虫体验（一） - 使用dom-crawler和guzzle实现基本的爬虫
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-15 10:36:18" itemprop="dateCreated datePublished" datetime="2018-10-15T10:36:18+08:00">2018-10-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-17 14:22:51" itemprop="dateModified" datetime="2021-08-17T14:22:51+08:00">2021-08-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>网络爬虫在大数据时代可以非常高效地自动进行数据的收集处理，而传统爬虫最简单也是最基本的功能实现原理即是下载网页，然后通过抽取页面元素来达到收集信息的目的。</p>
+<p>PHP作为一门灵活易用的脚本语言，实现这些功能自然是不在话下的。</p>
+<p>这里实现爬虫基于两个组件：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/guzzle/guzzle">guzzle</a>：最好用的PHP HTTP客户端，用来进行爬取页面的请求，异步请求和并发请求功能可以用来实现一些后期的扩展功能。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/symfony/dom-crawler">dom-crawler</a>：symphony的Dom分析组件，可以用来分析HTML页面Dom元素和XML文件，用来进行页面分析。</p>
+<p>两个组件在项目中都可以很方便地使用composer进行安装，这里以博客园的文章为例，使用这两个组件实现最简单的页面抓取，抓取我个人博客园首页的文章摘要和链接。</p>
+<p>代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require_once</span> <span class="keyword">__DIR__</span> . <span class="string">&#x27;/vendor/autoload.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">DomCrawler</span>\<span class="title">Crawler</span>;</span><br><span class="line"></span><br><span class="line">run();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">run</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//要爬取的页面地址为我的博客园主页</span></span><br><span class="line">    <span class="variable">$url</span> = <span class="string">&quot;http://www.cnblogs.com/jackiebao/&quot;</span>;</span><br><span class="line">    <span class="comment">//伪造浏览器UA</span></span><br><span class="line">    <span class="variable">$headers</span> = [</span><br><span class="line">        <span class="string">&#x27;user-agent&#x27;</span> =&gt; <span class="string">&#x27;Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36&#x27;</span>,</span><br><span class="line">    ];</span><br><span class="line">    <span class="variable">$client</span> = <span class="keyword">new</span> Client([</span><br><span class="line">        <span class="string">&#x27;timeout&#x27;</span> =&gt; <span class="number">20</span>,</span><br><span class="line">        <span class="string">&#x27;headers&#x27;</span> =&gt; <span class="variable">$headers</span></span><br><span class="line">    ]);</span><br><span class="line">    <span class="comment">//发送请求获取页面内容</span></span><br><span class="line">    <span class="variable">$response</span> = <span class="variable">$client</span>-&gt;request(<span class="string">&#x27;GET&#x27;</span>, <span class="variable">$url</span>)-&gt;getBody()-&gt;getContents();</span><br><span class="line"></span><br><span class="line">    <span class="variable">$data</span> = [];</span><br><span class="line">    <span class="variable">$crawler</span> = <span class="keyword">new</span> Crawler();</span><br><span class="line">    <span class="variable">$crawler</span>-&gt;addHtmlContent(<span class="variable">$response</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用crawler进行页面内容分析</span></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">//这里使用的是xpath语法，轮询forFlow子类day中的元素，既页面上每一篇文章的块状元素，并且进行内容获取</span></span><br><span class="line">        <span class="variable">$crawler</span>-&gt;filterXPath(<span class="string">&#x27;//div[contains(@class, &quot;forFlow&quot;)]/div[contains(@class, &quot;day&quot;)]&#x27;</span>)-&gt;each(<span class="function"><span class="keyword">function</span>(<span class="params">Crawler <span class="variable">$node</span>, <span class="variable">$i</span></span>) <span class="title">use</span> (<span class="params">&amp;<span class="variable">$data</span></span>)</span>&#123;</span><br><span class="line">            <span class="variable">$item</span> = [</span><br><span class="line">                <span class="string">&#x27;date&#x27;</span> =&gt; <span class="variable">$node</span>-&gt;filterXPath(<span class="string">&#x27;//div[contains(@class, &quot;dayTitle&quot;)]/a&#x27;</span>)-&gt;text(),</span><br><span class="line">                <span class="string">&#x27;title&#x27;</span> =&gt; <span class="variable">$node</span>-&gt;filterXPath(<span class="string">&#x27;//div[contains(@class, &quot;postTitle&quot;)]/a&#x27;</span>)-&gt;text(),</span><br><span class="line">                <span class="string">&#x27;abstract&#x27;</span> =&gt; <span class="variable">$node</span>-&gt;filterXPath(<span class="string">&#x27;//div[contains(@class, &quot;postCon&quot;)]/div&#x27;</span>)-&gt;text(),</span><br><span class="line">                <span class="string">&#x27;url&#x27;</span> =&gt; <span class="variable">$node</span>-&gt;filterXPath(<span class="string">&#x27;//div[contains(@class, &quot;postCon&quot;)]/div/a&#x27;</span>)-&gt;attr(<span class="string">&#x27;href&#x27;</span>),</span><br><span class="line">            ];</span><br><span class="line">            <span class="variable">$data</span>[] = <span class="variable">$item</span>;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;<span class="keyword">catch</span> (\<span class="built_in">Exception</span> <span class="variable">$e</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$e</span>-&gt;getMessage() . PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//打印结果</span></span><br><span class="line">    print_r(<span class="variable">$data</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印出来的结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">Array</span><br><span class="line">(</span><br><span class="line">    [0] &#x3D;&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] &#x3D;&gt; 2018年4月27日</span><br><span class="line">            [title] &#x3D;&gt; windows环境下给PHP增加rdkafka扩展</span><br><span class="line">            [abstract] &#x3D;&gt; 摘要: 因为工作需要kafka作为消息中间件，所以在本地开发环境进行测试的时候需要给PHP添加rdkafka扩展，使用PHP作为producer或者cosumer，在此纪录一下rdkafka的安装过程。 扩展下载地址：http:&#x2F;&#x2F;pecl.php.net&#x2F;package&#x2F;rdkafka 根据自身PHP版本阅读全文</span><br><span class="line">            [url] &#x3D;&gt; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jackiebao&#x2F;p&#x2F;8962804.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [1] &#x3D;&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] &#x3D;&gt; 2018年2月24日</span><br><span class="line">            [title] &#x3D;&gt; 在亚马逊aws服务器上添加Google BBR支持</span><br><span class="line">            [abstract] &#x3D;&gt; 摘要: 参考文章： https:&#x2F;&#x2F;51.ruyo.net&#x2F;2783.html http:&#x2F;&#x2F;blog.csdn.net&#x2F;VgFengYe&#x2F;article&#x2F;details&#x2F;78609040 官方 quick start文档：https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;bbr&#x2F;blob&#x2F;master&#x2F;阅读全文</span><br><span class="line">            [url] &#x3D;&gt; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jackiebao&#x2F;p&#x2F;8466232.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [2] &#x3D;&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] &#x3D;&gt; 2018年2月22日</span><br><span class="line">            [title] &#x3D;&gt; PHP static关键字和self关键字的区别</span><br><span class="line">            [abstract] &#x3D;&gt; 摘要: 在PHP的一个类中，带有static关键字的方法和属性被称为静态方法和静态属性，这样的方法和属性可以通过类直接访问，而不需要通过类对应的实例来进行访问，在类中访问静态变量以及静态属性的时候，可以使用self关键字和static关键字，两种访问方式看起来似乎没有区别，但是实际上还是不一样的 运行之后的阅读全文</span><br><span class="line">            [url] &#x3D;&gt; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jackiebao&#x2F;p&#x2F;8459899.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [3] &#x3D;&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] &#x3D;&gt; 2018年2月6日</span><br><span class="line">            [title] &#x3D;&gt; linux系统mysql忘记密码处理</span><br><span class="line">            [abstract] &#x3D;&gt; 摘要: 最近开始重新拾掇自己优惠时贪便宜买的一台京东云主机，然而早已经将当年集成环境一键安装时设置的mysql密码给忘了。 于是度娘了解决办法，大致分为以下步骤： 结果执行之后报这个错误 “Unknown column &#39;password&#39; in &#39;field list&#39;”。 后查询得知mysql在5.7版阅读全文</span><br><span class="line">            [url] &#x3D;&gt; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jackiebao&#x2F;p&#x2F;8424672.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [4] &#x3D;&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] &#x3D;&gt; 2018年1月25日</span><br><span class="line">            [title] &#x3D;&gt; PHP7 新增加的两种运算符</span><br><span class="line">            [abstract] &#x3D;&gt; 摘要: 太空舱运算符: 空合并运算符：阅读全文</span><br><span class="line">            [url] &#x3D;&gt; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jackiebao&#x2F;p&#x2F;8352383.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [5] &#x3D;&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] &#x3D;&gt; 2017年4月25日</span><br><span class="line">            [title] &#x3D;&gt; PHP trait 特性</span><br><span class="line">            [abstract] &#x3D;&gt; 摘要: trait是PHP自5.4版本之后加入的一种新的代码复用机制，是一种细粒度代码复用的方法。官方文档对于trait给出的解释是： 自 PHP 5.4.0 起，PHP 实现了一种代码复用的方法，称为 trait。 Trait 是为类似 PHP 的单继承语言而准备的一种代码复用机制。Trait 为了减少单阅读全文</span><br><span class="line">            [url] &#x3D;&gt; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jackiebao&#x2F;p&#x2F;6763388.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [6] &#x3D;&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] &#x3D;&gt; 2017年1月23日</span><br><span class="line">            [title] &#x3D;&gt; PHP 字符串拆分函数</span><br><span class="line">            [abstract] &#x3D;&gt; 摘要: function str_split_utf8($str) &#123; $split &#x3D; 1; $array &#x3D; array(); for ($i &#x3D; 0; $i 127) &#123; if ($value &gt;&#x3D; 192 &amp;&amp; $value &#x3D; 224 &amp;&amp; $value &#x3D; 240 &amp;&amp; $value &lt;&#x3D; 247) &#123; ...阅读全文</span><br><span class="line">            [url] &#x3D;&gt; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jackiebao&#x2F;p&#x2F;6344173.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [7] &#x3D;&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] &#x3D;&gt; 2016年10月25日</span><br><span class="line">            [title] &#x3D;&gt; Windows 环境下php安装openssl证书</span><br><span class="line">            [abstract] &#x3D;&gt; 摘要: 新的电脑安装了PHP、设置好环境变量之后安装了composer，想要通过composer安装Yii2，结果出现了如下报错： 检查发现php.ini里面的extension&#x3D;php_openssl.dll已开启,如提示所说问题的原因是证书认证失败。 解决方法： http:&#x2F;&#x2F;curl.haxx.se&#x2F;阅读全文</span><br><span class="line">            [url] &#x3D;&gt; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jackiebao&#x2F;p&#x2F;5996770.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [8] &#x3D;&gt; Array</span><br><span class="line">        (</span><br><span class="line">            [date] &#x3D;&gt; 2016年7月21日</span><br><span class="line">            [title] &#x3D;&gt; PHP 按照多个键值给数组分组合并</span><br><span class="line">            [abstract] &#x3D;&gt; 摘要: 简介： $array 为一堆数组，各数组键值为固定 $keys为分组依据，在$array中按照$keys所指定的键值将数组分组，并且将除$keys指定键值对应的值以外的值合并 输出：阅读全文</span><br><span class="line">            [url] &#x3D;&gt; https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jackiebao&#x2F;p&#x2F;5691094.html</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>得到这样格式化的数据就很方便进行进一步的处理了，而最基础的爬虫功能也就实现了，实际上是非常简单的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/php/" rel="tag"># php</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/07/22/rdkafka/" rel="prev" title="windows环境下给PHP增加rdkafka扩展">
+                  <i class="fa fa-chevron-left"></i> windows环境下给PHP增加rdkafka扩展
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/21/composer-vcs/" rel="next" title="composer 更新项目使用VCS源">
+                  composer 更新项目使用VCS源 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackie Bao</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

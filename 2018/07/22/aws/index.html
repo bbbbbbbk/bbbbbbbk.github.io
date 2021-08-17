@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hex.jackiebao.cn","root":"/","images":"/images","scheme":"Muse","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="注册： 注册地址 点击页面中间的创建免费用户，进入下一步页面:   然后就是填写各种个人信息的页面了:   填写付款信息:   付款信息会进行一个电话验证，这里需要先填写对应的电话号码和验证码，然后点立刻呼叫我，提示音之后从手机键盘上输入提示的验证码就可以完成验证   验证登录完成后进入主界面：   选择所有服务-》EC2，然后启动实例:   我选择的是Ubuntu Server 16.04 LT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="注册免费试用12个月的亚马逊AWS云计算服务">
+<meta property="og:url" content="http://hex.jackiebao.cn/2018/07/22/aws/index.html">
+<meta property="og:site_name" content="The Wandering Isle">
+<meta property="og:description" content="注册： 注册地址 点击页面中间的创建免费用户，进入下一步页面:   然后就是填写各种个人信息的页面了:   填写付款信息:   付款信息会进行一个电话验证，这里需要先填写对应的电话号码和验证码，然后点立刻呼叫我，提示音之后从手机键盘上输入提示的验证码就可以完成验证   验证登录完成后进入主界面：   选择所有服务-》EC2，然后启动实例:   我选择的是Ubuntu Server 16.04 LT">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/1.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/2.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/3.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/4.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/5.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/6.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/7.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/8.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/9.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/10.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/11.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/12.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/13.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/14.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/15.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/16.png">
+<meta property="og:image" content="http://hex.jackiebao.cn/2018/07/22/aws/17.png">
+<meta property="article:published_time" content="2018-07-22T09:38:37.000Z">
+<meta property="article:modified_time" content="2021-08-17T06:22:51.946Z">
+<meta property="article:author" content="Jackie Bao">
+<meta property="article:tag" content="旧文搬运">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hex.jackiebao.cn/2018/07/22/aws/1.png">
+
+
+<link rel="canonical" href="http://hex.jackiebao.cn/2018/07/22/aws/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hex.jackiebao.cn/2018/07/22/aws/","path":"2018/07/22/aws/","title":"注册免费试用12个月的亚马逊AWS云计算服务"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>注册免费试用12个月的亚马逊AWS云计算服务 | The Wandering Isle</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">The Wandering Isle</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Jackie's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jackie Bao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hex.jackiebao.cn/2018/07/22/aws/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jackie Bao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Wandering Isle">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          注册免费试用12个月的亚马逊AWS云计算服务
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-22 17:38:37" itemprop="dateCreated datePublished" datetime="2018-07-22T17:38:37+08:00">2018-07-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-17 14:22:51" itemprop="dateModified" datetime="2021-08-17T14:22:51+08:00">2021-08-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/old-archives/" itemprop="url" rel="index"><span itemprop="name">旧文搬运</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>注册：</p>
+<p><a target="_blank" rel="noopener" href="https://aws.amazon.com/cn/free/">注册地址</a></p>
+<p>点击页面中间的创建免费用户，进入下一步页面:</p>
+<img src="/2018/07/22/aws/1.png" class="" title="注册地址">
+
+<p>然后就是填写各种个人信息的页面了:</p>
+<img src="/2018/07/22/aws/2.png" class="" title="创建免费用户">
+
+<p>填写付款信息:</p>
+<img src="/2018/07/22/aws/3.png" class="" title="填写个人信息">
+
+<p>付款信息会进行一个电话验证，这里需要先填写对应的电话号码和验证码，然后点立刻呼叫我，提示音之后从手机键盘上输入提示的验证码就可以完成验证</p>
+<img src="/2018/07/22/aws/4.png" class="" title="填写付款信息">
+
+<p>验证登录完成后进入主界面：</p>
+<img src="/2018/07/22/aws/5.png" class="" title="付款信息电话验证">
+
+<p>选择所有服务-》EC2，然后启动实例:</p>
+<img src="/2018/07/22/aws/6.png" class="" title="进入主界面">
+
+<p>我选择的是Ubuntu Server 16.04 LTS (HVM), SSD Volume Type：</p>
+<img src="/2018/07/22/aws/7.png" class="" title="启动实例">
+
+<p> 选择好实例类型然后点审核启动：</p>
+<img src="/2018/07/22/aws/8.png" class="" title="实例类型">
+
+
+<p>下载保存密钥对：</p>
+<img src="/2018/07/22/aws/9.png" class="" title="启动实例">
+
+<p>然后就能看到启动状态了：</p>
+<img src="/2018/07/22/aws/10.png" class="" title="下载密钥对">
+
+<p>选择创建账单警报以免超过免费流量限制：</p>
+<img src="/2018/07/22/aws/11.png" class="" title="查看启动状态">
+
+<p>在控制台可以看见实例已经在运行，接下来就是连接到服务器了：</p>
+<img src="/2018/07/22/aws/12.png" class="" title="创建账单报警">
+
+<p>使用xshell连接：</p>
+<p>打开xshell，选择工具-&gt;用户秘钥管理者，点导入秘钥，导入刚才创建的秘钥对</p>
+<img src="/2018/07/22/aws/13.png" class="" title="连接服务器">
+
+<p>然后新建连接：</p>
+<img src="/2018/07/22/aws/14.png" class="" title="打开xshell">
+
+<p>设置用户身份验证方式：</p>
+<img src="/2018/07/22/aws/15.png" class="" title="新建xshell链接">
+
+<p>点击确定后，会弹出会话窗口，第一次连接会弹出警告框，选择”接受并保存”：</p>
+<img src="/2018/07/22/aws/16.png" class="" title="设置用户身份验证方式">
+
+<p>点击连接，出现以下界面，表示连接成功：</p>
+<img src="/2018/07/22/aws/17.png" class="" title="弹出会话窗口">
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/old-archives/" rel="tag"># 旧文搬运</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/07/22/diffrences_between_static_and_self/" rel="prev" title="PHP static关键字和self关键字的区别">
+                  <i class="fa fa-chevron-left"></i> PHP static关键字和self关键字的区别
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/07/22/BBR_support/" rel="next" title="在亚马逊aws服务器上添加Google BBR支持">
+                  在亚马逊aws服务器上添加Google BBR支持 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackie Bao</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
